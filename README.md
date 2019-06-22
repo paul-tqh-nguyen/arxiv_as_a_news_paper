@@ -37,3 +37,43 @@ Our front end UI is the crux of this project.
 Our front end displays from abstracts of recent papers shown on https://arxiv.org/ along with their authors, relevant research fields, etc. in a way that resembles a newspaper or the website of one.
 
 Our front end is implemented in [React](https://reactjs.org/). 
+
+## Instructions For Use
+
+See the sub-sections below for details on how to use our ETL utilities or our front end interface. 
+
+### ETL Only Instructions
+
+Our ETL process scrapes https://arxiv.org/ for information on the most recent papers archived there and stores it in our [NoSQL](https://en.wikipedia.org/wiki/NoSQL) database.
+
+To execute our ETL process, run the following command from the top most level of the checkout:
+
+```
+./arxiv_as_a_newspaper -run-etl-process
+```
+
+### Front End Only Instructions
+
+If you want to simply use our front end interface, run the following command from the top most level of the checkout:
+
+```
+./arxiv_as_a_newspaper -start-front-end-server
+```
+
+### End-To-End Instructions
+
+To run our entier end-to-end process, run the following command from the top most level of the checkout:
+
+```
+./arxiv_as_a_newspaper -end-to-end
+```
+
+## Debugging Dependencies
+
+Here are some commands that might come in useful if you're having trouble with missing libraries when attempting to use any of our tools:
+
+```
+sudo pip3 install bs4
+sudo pip3 install pymongo
+sudo pip3 install dnspython
+```
