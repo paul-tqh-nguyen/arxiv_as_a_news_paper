@@ -1,8 +1,10 @@
-# arxiv_as_a_news_paper
+# arxiv_as_a_newspaper
 
 Some of us read papers from https://arxiv.org/ to keep up to date with the state of the art in whatever field we work in. 
 
-We sort of treat it as a news source. 
+We treat it as a news source. 
+
+It would be interesting to investigate the impacts of having the user experience of https://arxiv.org/ match that of older or more traditional news sources. 
 
 This is a front-end for the content of https://arxiv.org/ that resembles a news paper. 
 
@@ -27,3 +29,11 @@ Our [ETL](https://en.wikipedia.org/wiki/Extract,_transform,_load) functionality 
 The scraping is implemented in [Python3](https://www.python.org/download/releases/3.0/) via [Beautiful Soup](https://en.wikipedia.org/wiki/Beautiful_Soup_(HTML_parser)).
 
 Our database is implemented as a [NoSQL](https://en.wikipedia.org/wiki/NoSQL) database via [MongoDB Atlas](https://www.mongodb.com/cloud/atlas). 
+
+### Front End UI
+
+Our front end UI is the crux of this project. 
+
+Our front end displays from abstracts of recent papers shown on https://arxiv.org/ along with their authors, relevant research fields, etc. in a way that resembles a newspaper or the website of one.
+
+Our front end is implemented in [React](https://reactjs.org/). 
