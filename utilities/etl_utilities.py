@@ -30,6 +30,9 @@ import re
 import requests
 from bs4 import BeautifulSoup
 import urllib.parse
+import functools
+import itertools
+import json
 
 ############################################
 # arXiv Scraping Utilities for General Use #
@@ -93,14 +96,48 @@ def _is_arxiv_recent_page_link(link_string):
 
 ###############################################
 # arXiv Scraping Utilities for "Recent" Pages #
-##############################################
+###############################################
 
 def extract_info_from_recent_page_url_as_json(recent_page_url):
-    info_tuples = extract_info_from_recent_page_url(recent_page_url)
-    json_iterator = map(recent_page_url_info_tuple_to_json, info_tuples)
+    '''
+    Returns an iterator of json strings. 
+    Each JSON string looks something like this:
+    {"page_link": "https://arxiv.org/abs/1906.08550",
+    "research_paper_title": "Chemical Compositions of Field and Globular Cluster RR~Lyrae Stars: II.  omega Centauri", 
+    "author_info": [{"author": "D. Magurno", "author_link": "https://arxiv.org/search/astro-ph?searchtype=author&query=Magurno%2C+D"}, 
+                    {"author": "C. Sneden", "author_link": "https://arxiv.org/search/astro-ph?searchtype=author&query=Sneden%2C+C"}, 
+                    {"author": "G. Bono", "author_link": "https://arxiv.org/search/astro-ph?searchtype=author&query=Bono%2C+G"}, 
+                    {"author": "V. F. Braga", "author_link": "https://arxiv.org/search/astro-ph?searchtype=author&query=Braga%2C+V+F"}, 
+                    {"author": "M. Mateo", "author_link": "https://arxiv.org/search/astro-ph?searchtype=author&query=Mateo%2C+M"}, 
+                    {"author": "S. E. Persson", "author_link": "https://arxiv.org/search/astro-ph?searchtype=author&query=Persson%2C+S+E"}, 
+                    {"author": "G. Preston", "author_link": "https://arxiv.org/search/astro-ph?searchtype=author&query=Preston%2C+G"},
+                    {"author": "F. Thevenin", "author_link": "https://arxiv.org/search/astro-ph?searchtype=author&query=Thevenin%2C+F"},
+                    {"author": "R. da Silva", "author_link": "https://arxiv.org/search/astro-ph?searchtype=author&query=da+Silva%2C+R"},
+                    {"author": "M. Dall\'Ora", "author_link": "https://arxiv.org/search/astro-ph?searchtype=author&query=Dall%27Ora%2C+M"},
+                    {"author": "M. Fabrizio", "author_link": "https://arxiv.org/search/astro-ph?searchtype=author&query=Fabrizio%2C+M"},
+                    {"author": "I. Ferraro", "author_link": "https://arxiv.org/search/astro-ph?searchtype=author&query=Ferraro%2C+I"},
+                    {"author": "G. Fiorentino", "author_link": "https://arxiv.org/search/astro-ph?searchtype=author&query=Fiorentino%2C+G"},
+                    {"author": "G. Iannicola", "author_link": "https://arxiv.org/search/astro-ph?searchtype=author&query=Iannicola%2C+G"},
+                    {"author": "L. Inno", "author_link": "https://arxiv.org/search/astro-ph?searchtype=author&query=Inno%2C+L"},
+                    {"author": "M. Marengo", "author_link": "https://arxiv.org/search/astro-ph?searchtype=author&query=Marengo%2C+M"},
+                    {"author": "S. Marinoni", "author_link": "https://arxiv.org/search/astro-ph?searchtype=author&query=Marinoni%2C+S"},
+                    {"author": "P. M. Marrese", "author_link": "https://arxiv.org/search/astro-ph?searchtype=author&query=Marrese%2C+P+M"},
+                    {"author": "C. E. Martinez-Vazquez", "author_link": "https://arxiv.org/search/astro-ph?searchtype=author&query=Martinez-Vazquez%2C+C+E"},
+                    {"author": "N. Matsunaga", "author_link": "https://arxiv.org/search/astro-ph?searchtype=author&query=Matsunaga%2C+N"},
+                    {"author": "M. Monelli", "author_link": "https://arxiv.org/search/astro-ph?searchtype=author&query=Monelli%2C+M"},
+                    {"author": "J. R. Neeley", "author_link": "https://arxiv.org/search/astro-ph?searchtype=author&query=Neeley%2C+J+R"},
+                    {"author": "M. Nonino", "author_link": "https://arxiv.org/search/astro-ph?searchtype=author&query=Nonino%2C+M"},
+                    {"author": "A. R. Walker", "author_link": "https://arxiv.org/search/astro-ph?searchtype=author&query=Walker%2C+A+R"}],
+    "primary_subject": "Solar and Stellar Astrophysics (astro-ph.SR)",
+    "secondary_subjects": ["Astrophysics of Galaxies (astro-ph.GA)"],
+    "abstract": "We present a detailed spectroscopic analysis of RR Lyrae (RRL) variables in the globular cluster NGC 5139 (omega Cen). We collected optical (4580-5330 A), high resolution (R = 34,000), high signal-to-noise ratio (200) spectra for 113 RRLs with the multi-fiber spectrograph M2FS at the Magellan/Clay Telescope at Las Campanas Observatory. We also analysed high resolution (R = 26,000) spectra for 122 RRLs collected with FLAMES/GIRAFFE at the VLT, available in the ESO archive. The current sample doubles the literature abundances of cluster and field RRLs in the Milky Way based on high resolution spectra. Equivalent width measurements were used to estimate atmospheric parameters, iron, and abundance ratios for alpha (Mg, Ca, Ti), iron peak (Sc, Cr, Ni, Zn), and s-process (Y) elements. We confirm that omega Cen is a complex cluster, characterised by a large spread in the iron content: -2.58 < [Fe/H] < -0.85. We estimated the average cluster abundance as [Fe/H] = -1.80 +- 0.03, with sigma = 0.33 dex. Our findings also suggest that two different RRL populations coexist in the cluster. The former is more metal-poor ([Fe/H] < -1.5), with almost solar abundance of Y. The latter is less numerous, more metal-rich, and yttrium enhanced ([Y/Fe] > 0.4). This peculiar bimodal enrichment only shows up in the s-process element, and it is not observed among lighter elements, whose [X/Fe] ratios are typical for Galactic globular clusters."}
+pnguyen@pnguyenmachine:~/code/arxiv_as_a_news_paper/utilities$ 
+    '''
+    info_tuples = _extract_info_from_recent_page_url(recent_page_url)
+    json_iterator = map(_recent_page_url_info_tuple_to_json, info_tuples)
     return json_iterator
 
-def recent_page_url_info_tuple_to_json(info_tuple):
+def _recent_page_url_info_tuple_to_json(info_tuple):
     link_to_paper_page, title, author_to_author_link_dictionary, primary_subject, secondary_subjects_iterator, abstract = info_tuple
     secondary_subjects = secondary_subjects_iterator
     json_dict = {"page_link" : link_to_paper_page,
@@ -112,18 +149,18 @@ def recent_page_url_info_tuple_to_json(info_tuple):
     json_string = json.dumps(json_dict)
     return json_string
 
-def extract_info_from_recent_page_url(recent_page_url):
-    tuple_without_abstract_iterator = extract_info_without_abstract_from_recent_page_url(recent_page_url)
-    result_iterator = map(append_abstract_to_info_extracted_from_recent_page_url, tuple_without_abstract_iterator)
+def _extract_info_from_recent_page_url(recent_page_url):
+    tuple_without_abstract_iterator = _extract_info_without_abstract_from_recent_page_url(recent_page_url)
+    result_iterator = map(_append_abstract_to_info_extracted_from_recent_page_url, tuple_without_abstract_iterator)
     return result_iterator
 
-def append_abstract_to_info_extracted_from_recent_page_url(info_tuple):
+def _append_abstract_to_info_extracted_from_recent_page_url(info_tuple):
     link_to_paper_page, title, author_to_author_link_dictionaries, primary_subject, secondary_subjects = info_tuple
-    abstract = abstract_text_from_arxiv_paper_url(link_to_paper_page)
+    abstract = _abstract_text_from_arxiv_paper_url(link_to_paper_page)
     info_tuple = (link_to_paper_page, title, author_to_author_link_dictionaries, primary_subject, secondary_subjects, abstract)
     return info_tuple
 
-def abstract_text_from_arxiv_paper_url(paper_url):
+def _abstract_text_from_arxiv_paper_url(paper_url):
     text = _get_text_at_url(paper_url)
     soup = BeautifulSoup(text, features="lxml")
     abstract_block_quote = soup.find("blockquote", {"class": "abstract mathjax"})
@@ -132,16 +169,16 @@ def abstract_text_from_arxiv_paper_url(paper_url):
     abstract_text = abstract_text_raw.replace("\n", " ").strip()
     return abstract_text
 
-def extract_info_without_abstract_from_recent_page_url(recent_page_url):
+def _extract_info_without_abstract_from_recent_page_url(recent_page_url):
     '''The "Recent" page includes a bunch of papers. We return an iterator yielding tuples. The tuples are of the form (LINK_TO_PAPER_PAGE, TITLE, AUTHOR_TO_AUTHOR_LINK_DICTIONARIES, PRIMARY_SUBJECT, SECONDARY_SUBJECTS).'''
     text = _get_text_at_url(recent_page_url)
     soup = BeautifulSoup(text, features="lxml")
     definition_lists = soup.find_all('dl')
-    info_tuple_iterators = map(extract_info_tuple_iterator_from_recent_pages_definition_list, definition_lists)
+    info_tuple_iterators = map(_extract_info_tuple_iterator_from_recent_pages_definition_list, definition_lists)
     result_iterator = functools.reduce(itertools.chain, info_tuple_iterators)
     return result_iterator
 
-def extract_info_tuple_iterator_from_recent_pages_definition_list(definition_list):
+def _extract_info_tuple_iterator_from_recent_pages_definition_list(definition_list):
     info_tuple_iterator = None
     definition_terms = definition_list.find_all("dt")
     definition_descriptions = definition_list.find_all("dd")
@@ -149,14 +186,14 @@ def extract_info_tuple_iterator_from_recent_pages_definition_list(definition_lis
         warn("{definition_list} could not be parsed properly".format(definition_list=definition_list), RuntimeWarning)
     else:
         term_description_doubles = zip(definition_terms, definition_descriptions)
-        info_tuple_iterator = extract_info_tuple_iterator_from_definition_term_description_doubles(term_description_doubles)
+        info_tuple_iterator = _extract_info_tuple_iterator_from_definition_term_description_doubles(term_description_doubles)
     return info_tuple_iterator
 
-def extract_info_tuple_iterator_from_definition_term_description_doubles(term_description_doubles):
-    result = map(extract_info_tuple_from_definition_term_description_double, term_description_doubles)
+def _extract_info_tuple_iterator_from_definition_term_description_doubles(term_description_doubles):
+    result = map(_extract_info_tuple_from_definition_term_description_double, term_description_doubles)
     return result
 
-def extract_info_tuple_from_definition_term_description_double(term_description_double):
+def _extract_info_tuple_from_definition_term_description_double(term_description_double):
     definition_term, definition_description = term_description_double
     
     anchor_with_relative_link_to_paper_page = definition_term.find("a", title="Abstract")
@@ -174,7 +211,7 @@ def extract_info_tuple_from_definition_term_description_double(term_description_
     author_relative_links = map(lambda link: link.get("href"), authors_division_anchors)
     author_links = map(_concatenate_relative_link_to_arxiv_base_url, author_relative_links)
     author_to_author_link_doubles = zip(authors, author_links)
-    author_to_author_link_dictionary_iterator = map(author_to_author_link_double_to_author_to_author_link_dictionary, author_to_author_link_doubles)
+    author_to_author_link_dictionary_iterator = map(_author_to_author_link_double_to_author_to_author_link_dictionary, author_to_author_link_doubles)
     author_to_author_link_dictionaries = list(author_to_author_link_dictionary_iterator)
     
     subjects_division = definition_description.find("div", attrs={"class":"list-subjects"})
@@ -187,7 +224,7 @@ def extract_info_tuple_from_definition_term_description_double(term_description_
     result = (link_to_paper_page, title, author_to_author_link_dictionaries, primary_subject, secondary_subjects)
     return result
 
-def author_to_author_link_double_to_author_to_author_link_dictionary(author_to_author_link_double):
+def _author_to_author_link_double_to_author_to_author_link_dictionary(author_to_author_link_double):
     author, author_link = author_to_author_link_double
     author_to_author_link_dictionary = {"author" : author,
                                         "author_link" : author_link}
@@ -200,7 +237,16 @@ def author_to_author_link_double_to_author_to_author_link_dictionary(author_to_a
 def main():
     print("This is the library for ETL utilities used in arxiv_as_a_newspaper. See https://github.com/paul-tqh-nguyen/arxiv_as_a_newspaper for more details.")
     # @todo remove all of the below once stability is reached.
-    print(list(arxiv_recent_page_title_and_page_link_string_iterator()))
+    all_research_field_to_recent_page_link_doubles = list(arxiv_recent_page_title_and_page_link_string_iterator())
+    print("all_research_field_to_recent_page_link_doubles")
+    print(all_research_field_to_recent_page_link_doubles)
+    first_research_field_to_recent_page_link_double = all_research_field_to_recent_page_link_doubles[0]
+    print("first_research_field_to_recent_page_link_double")
+    print(first_research_field_to_recent_page_link_double)
+    url = first_research_field_to_recent_page_link_double[1]
+    info_to_store_in_db = list(extract_info_from_recent_page_url_as_json(url))
+    print("info_to_store_in_db")
+    print(info_to_store_in_db)
     return None
 
 if __name__ == '__main__':
