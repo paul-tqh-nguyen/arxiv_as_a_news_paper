@@ -43,6 +43,9 @@ def _get_text_at_url(url):
     text = get_response.text
     return text
 
+def _concatenate_relative_link_to_arxiv_base_url(relative_link):
+    return urllib.parse.urljoin(ARXIV_URL, relative_link)
+
 ##########################################
 # arXiv Scraping Utilities for Main Page #
 ##########################################
@@ -58,35 +61,32 @@ def arxiv_recent_page_title_and_page_link_string_iterator():
     text = _arxiv_main_page_text()
     soup = BeautifulSoup(text, features="lxml")
     anchor_links = soup.find_all("a")
-    arxiv_recent_page_relevant_anchor_link_iterator = filter(anchor_link_is_arxiv_recent_page_link_with_research_field_denoting_text, anchor_links)
-    arxiv_recent_page_title_and_page_link_string_iterator = map(extract_text_and_link_string_from_arxiv_anchor_link, arxiv_recent_page_relevant_anchor_link_iterator)
+    arxiv_recent_page_relevant_anchor_link_iterator = filter(_anchor_link_is_arxiv_recent_page_link_with_research_field_denoting_text, anchor_links)
+    arxiv_recent_page_title_and_page_link_string_iterator = map(_extract_text_and_link_string_from_arxiv_anchor_link, arxiv_recent_page_relevant_anchor_link_iterator)
     return arxiv_recent_page_title_and_page_link_string_iterator
 
-def concatenate_relative_link_to_arxiv_base_url(relative_link):
-    return urllib.parse.urljoin(ARXIV_URL, relative_link)
-
-def extract_text_and_link_string_from_arxiv_anchor_link(anchor_link):
+def _extract_text_and_link_string_from_arxiv_anchor_link(anchor_link):
     link_text = anchor_link.text
     relative_link_string = anchor_link.get("href")
-    absolute_relative_link_string = concatenate_relative_link_to_arxiv_base_url(relative_link_string)
+    absolute_relative_link_string = _concatenate_relative_link_to_arxiv_base_url(relative_link_string)
     return (link_text, absolute_relative_link_string)
 
-def anchor_link_is_arxiv_recent_page_link_with_research_field_denoting_text(anchor_link):
+def _anchor_link_is_arxiv_recent_page_link_with_research_field_denoting_text(anchor_link):
     href_attribute = anchor_link.get("href")
     link_text = anchor_link.text
-    anchor_link_is_arxiv_recent_page_link = is_arxiv_recent_page_link(href_attribute)
+    anchor_link_is_arxiv_recent_page_link = _is_arxiv_recent_page_link(href_attribute)
     anchor_link_is_arxiv_recent_page_link_with_research_field_denoting_text = None
     if anchor_link_is_arxiv_recent_page_link:
         anchor_link_has_research_field_denoting_text = not (link_text == "recent") # @todo expand as needed
         anchor_link_is_arxiv_recent_page_link_with_research_field_denoting_text = anchor_link_has_research_field_denoting_text
     else:
         anchor_link_is_arxiv_recent_page_link_with_research_field_denoting_text = False
-    assert anchor_link_is_arxiv_recent_page_link_with_research_field_denoting_text is not None, "{function} logic is flawed.".format(function=anchor_link_is_arxiv_recent_page_link_with_research_field_denoting_text)
+    assert anchor_link_is_arxiv_recent_page_link_with_research_field_denoting_text is not None, "{function} logic is flawed.".format(function=_anchor_link_is_arxiv_recent_page_link_with_research_field_denoting_text)
     return anchor_link_is_arxiv_recent_page_link_with_research_field_denoting_text
 
 arxiv_recent_page_link_reg_ex = re.compile("/list/.+/recent")
 
-def is_arxiv_recent_page_link(link_string):
+def _is_arxiv_recent_page_link(link_string):
     string_pattern_match_result = arxiv_recent_page_link_reg_ex.match(link_string)
     is_arxiv_recent_page_link = (string_pattern_match_result is not None)
     return is_arxiv_recent_page_link
@@ -161,7 +161,7 @@ def extract_info_tuple_from_definition_term_description_double(term_description_
     
     anchor_with_relative_link_to_paper_page = definition_term.find("a", title="Abstract")
     relative_link_to_paper_page = anchor_with_relative_link_to_paper_page.get("href")
-    link_to_paper_page = concatenate_relative_link_to_arxiv_base_url(relative_link_to_paper_page)
+    link_to_paper_page = _concatenate_relative_link_to_arxiv_base_url(relative_link_to_paper_page)
     
     title_division = definition_description.find("div", attrs={"class":"list-title"})
     title_header_span = title_division.find("span", text="Title:", attrs={"class":"descriptor"})
@@ -172,7 +172,7 @@ def extract_info_tuple_from_definition_term_description_double(term_description_
     authors_division_anchors = authors_division.find_all("a")
     authors = map(lambda link: link.text, authors_division_anchors)
     author_relative_links = map(lambda link: link.get("href"), authors_division_anchors)
-    author_links = map(concatenate_relative_link_to_arxiv_base_url, author_relative_links)
+    author_links = map(_concatenate_relative_link_to_arxiv_base_url, author_relative_links)
     author_to_author_link_doubles = zip(authors, author_links)
     author_to_author_link_dictionary_iterator = map(author_to_author_link_double_to_author_to_author_link_dictionary, author_to_author_link_doubles)
     author_to_author_link_dictionaries = list(author_to_author_link_dictionary_iterator)
