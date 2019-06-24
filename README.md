@@ -51,7 +51,7 @@ Our ETL process scrapes https://arxiv.org/ for information on the most recent pa
 To execute our ETL entire process (i.e. scraping https://arxiv.org/ and storing the results into our DB), run the following command from the top most level of the checkout:
 
 ```
-./arxiv_as_a_newspaper -run-etl-process
+./arxiv_as_a_newspaper.py -run-etl-process
 ```
 
 You will be prompted for credentials to write to our DB.
@@ -59,7 +59,7 @@ You will be prompted for credentials to write to our DB.
 To execute our ETL process and write the results to a `.json` file rather than writing to our DB, run the following command from the top most level of the checkout:
 
 ```
-./arxiv_as_a_newspaper -write-etl-results-to-file <destiation.json>
+./arxiv_as_a_newspaper.py -write-etl-results-to-file <destiation.json>
 ```
 
 ### Front End Only Instructions
@@ -67,7 +67,7 @@ To execute our ETL process and write the results to a `.json` file rather than w
 If you want to simply use our front end interface (the info for the papers shown will be from our latest scrape of https://arxiv.org/), run the following command from the top most level of the checkout:
 
 ```
-./arxiv_as_a_newspaper -start-front-end-server
+./arxiv_as_a_newspaper.py -start-front-end-server
 ```
 
 ### End-To-End Instructions
@@ -75,7 +75,7 @@ If you want to simply use our front end interface (the info for the papers shown
 To run our entire end-to-end process (which is simply running our ETL process, writing ther esults to our DB, and then starting the front end server), run the following command from the top most level of the checkout:
 
 ```
-./arxiv_as_a_newspaper -end-to-end
+./arxiv_as_a_newspaper.py -end-to-end
 ```
 
 ## Troubleshooting Tips
