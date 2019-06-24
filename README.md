@@ -72,7 +72,7 @@ If you want to simply use our front end interface (the info for the papers shown
 
 ### End-To-End Instructions
 
-To run our entire end-to-end process (which is simply running our ETL process, writing ther esults to our DB, and then starting the front end server), run the following command from the top most level of the checkout:
+To run our entire end-to-end process (which is simply running our ETL process, writing the results to our DB, and then starting the front end server), run the following command from the top most level of the checkout:
 
 ```
 ./arxiv_as_a_newspaper.py -end-to-end
