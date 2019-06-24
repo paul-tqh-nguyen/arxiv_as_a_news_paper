@@ -28,7 +28,6 @@ Our [ETL](https://en.wikipedia.org/wiki/Extract,_transform,_load) functionality 
 
 The scraping is implemented in [Python3](https://www.python.org/download/releases/3.0/) via [Beautiful Soup](https://en.wikipedia.org/wiki/Beautiful_Soup_(HTML_parser)).
 
-Our database is implemented as a [NoSQL](https://en.wikipedia.org/wiki/NoSQL) database via [MongoDB Atlas](https://www.mongodb.com/cloud/atlas). 
 
 ### Front End UI
 
@@ -44,17 +43,25 @@ See the sub-sections below for details on how to use our ETL utilities or our fr
 
 ### ETL Only Instructions
 
-Our ETL process scrapes https://arxiv.org/ for information on the most recent papers archived there and stores it in our [NoSQL](https://en.wikipedia.org/wiki/NoSQL) database.
+Our ETL process scrapes https://arxiv.org/ for information on the most recent papers archived there and stores it in our [NoSQL](https://en.wikipedia.org/wiki/NoSQL) database. We are currently using  [MongoDB Atlas](https://www.mongodb.com/cloud/atlas). 
 
-To execute our ETL process, run the following command from the top most level of the checkout:
+To execute our ETL entire process (i.e. scraping https://arxiv.org/ and storing the results into our DB), run the following command from the top most level of the checkout:
 
 ```
 ./arxiv_as_a_newspaper -run-etl-process
 ```
 
+You will be prompted for credentials to write to our DB.
+
+To execute our ETL process and write the results to a `.json` file rather than writing to our DB, run the following command from the top most level of the checkout:
+
+```
+./arxiv_as_a_newspaper -write-etl-results-to-file <destiation.json>
+```
+
 ### Front End Only Instructions
 
-If you want to simply use our front end interface, run the following command from the top most level of the checkout:
+If you want to simply use our front end interface (the info for the papers shown will be from our latest scrape of https://arxiv.org/), run the following command from the top most level of the checkout:
 
 ```
 ./arxiv_as_a_newspaper -start-front-end-server
@@ -62,7 +69,7 @@ If you want to simply use our front end interface, run the following command fro
 
 ### End-To-End Instructions
 
-To run our entier end-to-end process, run the following command from the top most level of the checkout:
+To run our entire end-to-end process (which is simply running our ETL process, writing ther esults to our DB, and then starting the front end server), run the following command from the top most level of the checkout:
 
 ```
 ./arxiv_as_a_newspaper -end-to-end
@@ -70,7 +77,7 @@ To run our entier end-to-end process, run the following command from the top mos
 
 ## Debugging Dependencies
 
-Here are some commands that might come in useful if you're having trouble with missing libraries when attempting to use any of our tools:
+Here is an incomplete list of commands that might come in useful if you're having trouble with missing libraries when attempting to use any of our tools:
 
 ```
 sudo pip3 install bs4
