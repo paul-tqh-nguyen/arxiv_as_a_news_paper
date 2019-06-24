@@ -37,14 +37,24 @@ def write_etl_results_to_file(json_file):
     raise NotImplementedError("Support for write_etl_results_to_file is not yet implemented.")
     return None
 
-VALID_SPECIFIABLE_PROCESSES = ["run_etl_process", "write_etl_results_to_file"]
+def start_front_end_server():
+    raise NotImplementedError("Support for start_front_end_server is not yet implemented.")
+    return None
+
+def end_to_end():
+    raise NotImplementedError("Support for end_to_end is not yet implemented.")
+    return None
+
+VALID_SPECIFIABLE_PROCESSES = ["run_etl_process", "write_etl_results_to_file", "start_front_end_server", "end_to_end"]
 
 def _determine_all_processes_specified_by_script_args(args):
     arg_to_value_map = vars(args)
     processes_specified = []
     for arg, value in arg_to_value_map.items():
         if (arg == "run_etl_process" and value == True) or \
-           (arg == "write_etl_results_to_file" and isinstance(value,str)):
+           (arg == "write_etl_results_to_file" and isinstance(value,str)) or \
+           (arg == "start_front_end_server" and value == True) or \
+           (arg == "end_to_end" and value == True):
             processes_specified.append(arg)
         elif not arg in VALID_SPECIFIABLE_PROCESSES:
             raise SystemExit("Cannot handle input arg {bad_arg}.".format(bad_arg=arg))
@@ -76,6 +86,8 @@ def main():
     parser.add_argument('-run-etl-process', action='store_true', help="To execute our ETL entire process (i.e. scraping https://arxiv.org/ and storing the results into our DB)")
     parser.add_argument('-write-etl-results-to-file',default=None, type=str, metavar=("DESTINATION_JSON_FILE"),
                         help="To execute our ETL process and write the results to a .json file rather than writing to our DB")
+    parser.add_argument('-start-front-end-server', action='store_true', help="To simply use our front end interface (the info for the papers shown will be from our latest scrape of https://arxiv.org/).")
+    parser.add_argument('-end-to-end', action='store_true', help="To run our entire end-to-end process (which is simply running our ETL process, writing the results to our DB, and then starting the front end server).")
     args = parser.parse_args()
     try:
         process = _determine_single_process_specified_by_args(args)
@@ -91,6 +103,10 @@ def main():
     elif process == "write_etl_results_to_file":
         json_file = vars(args)["write_etl_results_to_file"]
         write_etl_results_to_file(json_file)
+    elif process == "start_front_end_server":
+        start_front_end_server()
+    elif process == "end_to_end":
+        end_to_end()
     else:
         raise SystemExit("Unexpected case reached. Please report an issue to https://github.com/paul-tqh-nguyen/arxiv_as_a_newspaper stating that arxiv_as_a_news_paper.py could not handle the args specified by {args}.".format(args=args))
     return None
