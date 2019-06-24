@@ -8,7 +8,7 @@ See https://github.com/paul-tqh-nguyen/arxiv_as_a_newspaper for more details wrt
 
 Owner : paul-tqh-nguyen
 
-Created : 05/03/2019
+Created : 06/23/2019
 
 File Name : arxiv_as_a_news_paper.py
 
