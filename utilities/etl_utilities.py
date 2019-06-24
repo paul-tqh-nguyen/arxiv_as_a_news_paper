@@ -52,7 +52,9 @@ def _arxiv_main_page_text():
     return arxiv_main_page_text
 
 def arxiv_recent_page_title_and_page_link_string_iterator():
-    # @todo add comment with the types of values it returns and from what links it gets
+    '''
+    Returns an iterator that yields tuples of the form (RESEARCH_FIELD_NAME, ARXIV_LINK_TO_RECENT_PAPERS_PAGE_RELEVANT_TO_FIELD), e.g. ('General Economics', 'https://arxiv.org/list/econ.GN/recent').
+    '''
     text = _arxiv_main_page_text()
     soup = BeautifulSoup(text, features="lxml")
     anchor_links = soup.find_all("a")
