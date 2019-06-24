@@ -94,6 +94,7 @@ Here is an incomplete list of commands that might come in useful if you're havin
 sudo pip3 install bs4
 sudo pip3 install pymongo
 sudo pip3 install dnspython
+sudo pip3 install lxml
 ```
 
 ### Linux Lamentations
