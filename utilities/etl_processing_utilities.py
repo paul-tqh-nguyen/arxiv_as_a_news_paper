@@ -23,8 +23,8 @@ File Organization:
 # Imports #
 ###########
 
-import load_utilities
-import extract_transform_utilities
+import utilities.load_utilities as load_utilities
+import utilities.extract_transform_utilities as extract_transform_utilities
 
 #################
 # ETL Interface #

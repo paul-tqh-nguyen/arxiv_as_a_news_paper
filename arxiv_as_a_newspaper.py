@@ -24,7 +24,7 @@ File Organization:
 
 import argparse
 import sys
-import etl_processing_utilities
+import utilities.etl_processing_utilities as etl_processing_utilities
 
 ###############
 # Main Runner #
