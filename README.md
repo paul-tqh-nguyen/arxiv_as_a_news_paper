@@ -28,9 +28,9 @@ Our [ETL](https://en.wikipedia.org/wiki/Extract,_transform,_load) functionality 
 
 The scraping is implemented in [Python3](https://www.python.org/download/releases/3.0/) via [Beautiful Soup](https://en.wikipedia.org/wiki/Beautiful_Soup_(HTML_parser)).
 
-Manual and automated testing has only taken place via Linux-like operating systems. 
+Manual and automated [testing](https://en.wikipedia.org/wiki/Software_testing) has only taken place via [Linux](https://en.wikipedia.org/wiki/Linux)-like operating systems. 
 
-Please report any issues regarding ETL troubles on other operating system flavors, e.g. Windows.
+Please report any issues regarding [ETL](https://en.wikipedia.org/wiki/Extract,_transform,_load) troubles on other operating system flavors, e.g. [Windows](https://en.wikipedia.org/wiki/Microsoft_Windows).
 
 ### Front End UI
 
@@ -97,9 +97,9 @@ sudo pip3 install dnspython
 sudo pip3 install lxml
 ```
 
-### Linux Lamentations
+### [Linux](https://en.wikipedia.org/wiki/Linux) Lamentations
 
-This section includes tips for solving common Linux issues that have shown to come up when using our tools.
+This section includes tips for solving common [Linux](https://en.wikipedia.org/wiki/Linux) issues that have shown to come up when using our tools.
 
 #### `Permission denied` via `chmod` issues
 
