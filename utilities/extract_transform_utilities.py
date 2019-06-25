@@ -33,6 +33,7 @@ from bs4 import BeautifulSoup
 import urllib.parse
 import functools
 import itertools
+import time
 
 ############################################
 # arXiv Scraping Utilities for General Use #
@@ -40,10 +41,23 @@ import itertools
 
 ARXIV_URL = "https://arxiv.org/"
 
-@lru_cache(maxsize=1024)
-def _get_text_at_url(url):
-    get_response = requests.get(url)
-    text = get_response.text
+@lru_cache(maxsize=8192)
+def _safe_get_text_at_url(url):
+    text = ""
+    number_of_attempts = 0
+    max_number_of_attempts = 5
+    while number_of_attempts < max_number_of_attempts and text == "":
+        try:
+            get_response = requests.get(url)
+            text = get_response.text
+        except requests.exceptions.ConnectionError as err:
+            number_of_attempts += 1
+            number_of_seconds_to_sleep = number_of_attempts * 10
+            if number_of_attempts < max_number_of_attempts:
+                print("Could not reach {url}; sleeping {number_of_seconds_to_sleep} seconds before attempting again.".format(url=url, number_of_seconds_to_sleep=number_of_seconds_to_sleep))
+                time.sleep(number_of_seconds_to_sleep)
+            else:
+                print("Could not reach {url} after {max_number_of_attempts} attempts; giving up.".format(url=url, max_number_of_attempts=max_number_of_attempts))
     return text
 
 def _concatenate_relative_link_to_arxiv_base_url(relative_link):
@@ -54,7 +68,7 @@ def _concatenate_relative_link_to_arxiv_base_url(relative_link):
 ##########################################
 
 def _arxiv_main_page_text():
-    arxiv_main_page_text = _get_text_at_url(ARXIV_URL)
+    arxiv_main_page_text = _safe_get_text_at_url(ARXIV_URL)
     return arxiv_main_page_text
 
 def _arxiv_recent_page_title_and_page_link_string_iterator():
@@ -159,7 +173,7 @@ def _append_abstract_to_info_extracted_from_recent_page_url(info_tuple):
     return info_tuple
 
 def _abstract_text_from_arxiv_paper_url(paper_url):
-    text = _get_text_at_url(paper_url)
+    text = _safe_get_text_at_url(paper_url)
     soup = BeautifulSoup(text, features="lxml")
     abstract_block_quote = soup.find("blockquote", {"class": "abstract mathjax"})
     abstract_span = abstract_block_quote.find("span", {"class": "descriptor"})
@@ -169,7 +183,7 @@ def _abstract_text_from_arxiv_paper_url(paper_url):
 
 def _extract_info_without_abstract_from_recent_page_url(recent_page_url):
     '''The "Recent" page includes a bunch of papers. We return an iterator yielding tuples. The tuples are of the form (LINK_TO_PAPER_PAGE, TITLE, AUTHOR_TO_AUTHOR_LINK_DICTIONARIES, PRIMARY_SUBJECT, SECONDARY_SUBJECTS).'''
-    text = _get_text_at_url(recent_page_url)
+    text = _safe_get_text_at_url(recent_page_url)
     soup = BeautifulSoup(text, features="lxml")
     definition_lists = soup.find_all('dl')
     info_tuple_iterators = map(_extract_info_tuple_iterator_from_recent_pages_definition_list, definition_lists)

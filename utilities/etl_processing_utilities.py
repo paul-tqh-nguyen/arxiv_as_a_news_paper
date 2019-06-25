@@ -31,6 +31,8 @@ import utilities.extract_transform_utilities as extract_transform_utilities
 #################
 
 def run_etl_process():
+    print("Starting scraping process.")
+    print()
     dicts_to_store_in_db_iterator = extract_transform_utilities.dicts_to_store_in_db_iterator()
     dicts_to_store_in_db = list(dicts_to_store_in_db_iterator)
     print("Clearing the external DB.")
