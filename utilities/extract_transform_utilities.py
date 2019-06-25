@@ -32,7 +32,6 @@ from bs4 import BeautifulSoup
 import urllib.parse
 import functools
 import itertools
-import json
 
 ############################################
 # arXiv Scraping Utilities for General Use #
@@ -98,10 +97,10 @@ def _is_arxiv_recent_page_link(link_string):
 # arXiv Scraping Utilities for "Recent" Pages #
 ###############################################
 
-def extract_info_from_recent_page_url_as_json(recent_page_url):
+def extract_info_from_recent_page_url_as_dicts(recent_page_url):
     '''
-    Returns an iterator of json strings. 
-    Each JSON string looks something like this:
+    Returns an iterator of dictionaries intended to look like JSON. 
+    Each dict looks something like this:
     {"page_link": "https://arxiv.org/abs/1906.08550",
     "research_paper_title": "Chemical Compositions of Field and Globular Cluster RR~Lyrae Stars: II.  omega Centauri", 
     "author_info": [{"author": "D. Magurno", "author_link": "https://arxiv.org/search/astro-ph?searchtype=author&query=Magurno%2C+D"}, 
@@ -131,13 +130,12 @@ def extract_info_from_recent_page_url_as_json(recent_page_url):
     "primary_subject": "Solar and Stellar Astrophysics (astro-ph.SR)",
     "secondary_subjects": ["Astrophysics of Galaxies (astro-ph.GA)"],
     "abstract": "We present a detailed spectroscopic analysis of RR Lyrae (RRL) variables in the globular cluster NGC 5139 (omega Cen). We collected optical (4580-5330 A), high resolution (R = 34,000), high signal-to-noise ratio (200) spectra for 113 RRLs with the multi-fiber spectrograph M2FS at the Magellan/Clay Telescope at Las Campanas Observatory. We also analysed high resolution (R = 26,000) spectra for 122 RRLs collected with FLAMES/GIRAFFE at the VLT, available in the ESO archive. The current sample doubles the literature abundances of cluster and field RRLs in the Milky Way based on high resolution spectra. Equivalent width measurements were used to estimate atmospheric parameters, iron, and abundance ratios for alpha (Mg, Ca, Ti), iron peak (Sc, Cr, Ni, Zn), and s-process (Y) elements. We confirm that omega Cen is a complex cluster, characterised by a large spread in the iron content: -2.58 < [Fe/H] < -0.85. We estimated the average cluster abundance as [Fe/H] = -1.80 +- 0.03, with sigma = 0.33 dex. Our findings also suggest that two different RRL populations coexist in the cluster. The former is more metal-poor ([Fe/H] < -1.5), with almost solar abundance of Y. The latter is less numerous, more metal-rich, and yttrium enhanced ([Y/Fe] > 0.4). This peculiar bimodal enrichment only shows up in the s-process element, and it is not observed among lighter elements, whose [X/Fe] ratios are typical for Galactic globular clusters."}
-pnguyen@pnguyenmachine:~/code/arxiv_as_a_news_paper/utilities$ 
     '''
     info_tuples = _extract_info_from_recent_page_url(recent_page_url)
-    json_iterator = map(_recent_page_url_info_tuple_to_json, info_tuples)
-    return json_iterator
+    iterator = map(_recent_page_url_info_tuple_to_dict, info_tuples)
+    return iterator
 
-def _recent_page_url_info_tuple_to_json(info_tuple):
+def _recent_page_url_info_tuple_to_dict(info_tuple):
     link_to_paper_page, title, author_to_author_link_dictionary, primary_subject, secondary_subjects_iterator, abstract = info_tuple
     secondary_subjects = secondary_subjects_iterator
     json_dict = {"page_link" : link_to_paper_page,
@@ -146,8 +144,7 @@ def _recent_page_url_info_tuple_to_json(info_tuple):
                  "primary_subject" : primary_subject, 
                  "secondary_subjects" : secondary_subjects,
                  "abstract" : abstract}
-    json_string = json.dumps(json_dict)
-    return json_string
+    return json_dict
 
 def _extract_info_from_recent_page_url(recent_page_url):
     tuple_without_abstract_iterator = _extract_info_without_abstract_from_recent_page_url(recent_page_url)
@@ -244,7 +241,7 @@ def main():
     print("first_research_field_to_recent_page_link_double")
     print(first_research_field_to_recent_page_link_double)
     url = first_research_field_to_recent_page_link_double[1]
-    info_to_store_in_db = list(extract_info_from_recent_page_url_as_json(url))
+    info_to_store_in_db = list(extract_info_from_recent_page_url_as_dicts(url))
     print("info_to_store_in_db")
     print(info_to_store_in_db)
     return None
