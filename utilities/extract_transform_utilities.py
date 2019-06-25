@@ -16,7 +16,8 @@ File Organization:
 * Imports
 * arXiv Scraping Utilities for General Use
 * arXiv Scraping Utilities for Main Page
-* arXiv Scraping Utilities for "Recent" Pages 
+* arXiv Scraping Utilities for "Recent" Pages
+* Transformation Utilities
 * Main Runner
 
 """
@@ -56,7 +57,7 @@ def _arxiv_main_page_text():
     arxiv_main_page_text = _get_text_at_url(ARXIV_URL)
     return arxiv_main_page_text
 
-def arxiv_recent_page_title_and_page_link_string_iterator():
+def _arxiv_recent_page_title_and_page_link_string_iterator():
     '''
     Returns an iterator that yields tuples of the form (RESEARCH_FIELD_NAME, ARXIV_LINK_TO_RECENT_PAPERS_PAGE_RELEVANT_TO_FIELD), e.g. ('General Economics', 'https://arxiv.org/list/econ.GN/recent').
     '''
@@ -97,7 +98,7 @@ def _is_arxiv_recent_page_link(link_string):
 # arXiv Scraping Utilities for "Recent" Pages #
 ###############################################
 
-def extract_info_from_recent_page_url_as_dicts(recent_page_url):
+def _extract_info_from_recent_page_url_as_dicts(recent_page_url):
     '''
     Returns an iterator of dictionaries intended to look like JSON. 
     Each dict looks something like this:
@@ -227,6 +228,21 @@ def _author_to_author_link_double_to_author_to_author_link_dictionary(author_to_
                                         "author_link" : author_link}
     return author_to_author_link_dictionary
 
+############################
+# Transformation Utilities #
+############################
+
+def dicts_to_store_in_db_iterator():
+    arxiv_recent_page_title_and_page_link_string_iterator = _arxiv_recent_page_title_and_page_link_string_iterator()
+    for research_field, research_field_recent_page_link in arxiv_recent_page_title_and_page_link_string_iterator:
+        print("Currently extracting information for research papers relevant to {research_field}.".format(research_field=research_field))
+        dicts_to_store = _extract_info_from_recent_page_url_as_dicts(research_field_recent_page_link)
+        len_dicts_to_store = 0
+        for dict_to_store in dicts_to_store:
+            len_dicts_to_store +=1
+            yield dict_to_store
+        print("Number of research papers found for {research_field}: {len_dicts_to_store}\n".format(research_field=research_field, len_dicts_to_store=len_dicts_to_store))
+
 ###############
 # Main Runner #
 ###############
@@ -234,14 +250,14 @@ def _author_to_author_link_double_to_author_to_author_link_dictionary(author_to_
 def main():
     print("This is the library for extraction & transformation utilities used in the ETL process of arxiv_as_a_newspaper. See https://github.com/paul-tqh-nguyen/arxiv_as_a_newspaper for more details.")
     # @todo remove all of the below once stability is reached.
-    all_research_field_to_recent_page_link_doubles = list(arxiv_recent_page_title_and_page_link_string_iterator())
+    all_research_field_to_recent_page_link_doubles = list(_arxiv_recent_page_title_and_page_link_string_iterator())
     print("all_research_field_to_recent_page_link_doubles")
     print(all_research_field_to_recent_page_link_doubles)
     first_research_field_to_recent_page_link_double = all_research_field_to_recent_page_link_doubles[0]
     print("first_research_field_to_recent_page_link_double")
     print(first_research_field_to_recent_page_link_double)
     url = first_research_field_to_recent_page_link_double[1]
-    info_to_store_in_db = list(extract_info_from_recent_page_url_as_dicts(url))
+    info_to_store_in_db = list(_extract_info_from_recent_page_url_as_dicts(url))
     print("info_to_store_in_db")
     print(info_to_store_in_db)
     return None
