@@ -2,15 +2,15 @@
 
 """
 
-Utilities for our ETL process.
+Utilities for the Extract & Transform parts of our ETL process.
 
-These utilities scrape info about recent research made in several fields from  https://arxiv.org/ and puts them into a NoSQL database.
+These utilities scrape info about recent research made in several fields from  https://arxiv.org/
 
 Owner : paul-tqh-nguyen
 
 Created : 06/23/2019
 
-File Name : etl_utilities.py
+File Name : extract_transform_utilities.py
 
 File Organization:
 * Imports
@@ -235,7 +235,7 @@ def _author_to_author_link_double_to_author_to_author_link_dictionary(author_to_
 ###############
 
 def main():
-    print("This is the library for ETL utilities used in arxiv_as_a_newspaper. See https://github.com/paul-tqh-nguyen/arxiv_as_a_newspaper for more details.")
+    print("This is the library for extraction & transformation utilities used in the ETL process of arxiv_as_a_newspaper. See https://github.com/paul-tqh-nguyen/arxiv_as_a_newspaper for more details.")
     # @todo remove all of the below once stability is reached.
     all_research_field_to_recent_page_link_doubles = list(arxiv_recent_page_title_and_page_link_string_iterator())
     print("all_research_field_to_recent_page_link_doubles")
