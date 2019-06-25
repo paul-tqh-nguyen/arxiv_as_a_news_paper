@@ -16,6 +16,7 @@ File Organization:
 * Imports
 * MongoDB General Connection Utilities
 * MongoDB Accessor Utilities
+* MongoDB Writing Utilities
 * Main Runner
 
 """
@@ -99,6 +100,17 @@ def arxiv_recent_paper_docs_as_dicts():
                 raise Exception("Unexpected handled error: {error}".format(error=error))
     return arxiv_recent_paper_json_docs
 
+#############################
+# MongoDB Writing Utilities #
+#############################
+
+def write_write_documents_as_dicts_to_arxiv_recent_papers_collection(dicts):
+    success_status = False
+    arxiv_recent_papers_collection = _arxiv_recent_papers_collection()
+    arxiv_recent_papers_collection.insert(dicts)
+    success_status = True
+    return success_status
+
 ###############
 # Main Runner #
 ###############
@@ -107,7 +119,16 @@ def main():
     print("This is the library for data loading utilities used in the ETL process of arxiv_as_a_newspaper. See https://github.com/paul-tqh-nguyen/arxiv_as_a_newspaper for more details.")
     # @todo remove all of the below once stability is reached.
     docs = arxiv_recent_paper_docs_as_dicts()
-    print("docs")
+    print("docs read from DB")
+    print(docs)
+    input_to_write_out = input("Value to write out to DB: ")
+    dict_to_write_out = {'key' : input_to_write_out}
+    second_dict_to_write_out = {'key' : input_to_write_out*2}
+    print("we're about to write to the DB this dict: {dictionary}".format(dictionary=dict_to_write_out))
+    print(write_write_documents_as_dicts_to_arxiv_recent_papers_collection([dict_to_write_out, second_dict_to_write_out]))
+    print("We're reading from the DB again")
+    docs = arxiv_recent_paper_docs_as_dicts()
+    print("docs read from DB")
     print(docs)
     return None
 
