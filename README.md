@@ -23,6 +23,8 @@ https://arxiv.org/ cannot provide it, so we must provide it via our [ETL](https:
 
 Our [ETL](https://en.wikipedia.org/wiki/Extract,_transform,_load) will scrape https://arxiv.org/ and store the information into a database that our front end will access. 
 
+NOTE: The extraction process can take a long time as we want to avoid being throttled or blocked. 
+
 Our [ETL](https://en.wikipedia.org/wiki/Extract,_transform,_load) functionality is not currently run on a regular basis through automation nor are there plans to do so until our front end interface finds a non-ephemeral home.
 
 The scraping is implemented in [Python3](https://www.python.org/download/releases/3.0/) via [Beautiful Soup](https://en.wikipedia.org/wiki/Beautiful_Soup_(HTML_parser)).
