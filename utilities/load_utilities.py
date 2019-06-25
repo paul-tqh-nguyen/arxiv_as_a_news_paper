@@ -17,6 +17,7 @@ File Organization:
 * MongoDB General Connection Utilities
 * MongoDB Accessor Utilities
 * MongoDB Writing Utilities
+* MongoDB Document Deletion Utilities
 * Main Runner
 
 """
@@ -63,6 +64,11 @@ def _arxic_recent_papers_db(client):
     db = client.get_database(RECENT_PAPERS_DB_NAME)
     return db
 
+def _clear_credentials_caches():
+    _get_username_and_password.cache_clear()
+    _arxiv_mongo_db_client.cache_clear()
+    return None
+
 ##############################
 # MongoDB Accessor Utilities #
 ##############################
@@ -91,8 +97,7 @@ def arxiv_recent_paper_docs_as_dicts():
         except Exception as error:
             if _error_is_authentication_error(error):
                 number_of_attempts += 1
-                _get_username_and_password.cache_clear()
-                _arxiv_mongo_db_client.cache_clear()
+                _clear_credentials_caches()
                 print("Attempt to authenticate with the given credentials failed.\n")
                 if number_of_attempts > 10:
                     raise SystemExit("Could not connect to the DB after 10 attempts. Exiting.")
@@ -111,6 +116,19 @@ def write_write_documents_as_dicts_to_arxiv_recent_papers_collection(dicts):
     success_status = True
     return success_status
 
+#######################################
+# MongoDB Document Deletion Utilities #
+#######################################
+
+def clear_arxiv_recent_papers_collection_of_all_documents():
+    '''
+    Returns number of delected documents.
+    '''
+    arxiv_recent_papers_collection = _arxiv_recent_papers_collection()
+    deletion = arxiv_recent_papers_collection.delete_many({})
+    deleted_count = deletion.deleted_count
+    return deleted_count
+
 ###############
 # Main Runner #
 ###############
@@ -127,6 +145,12 @@ def main():
     print("we're about to write to the DB this dict: {dictionary}".format(dictionary=dict_to_write_out))
     print(write_write_documents_as_dicts_to_arxiv_recent_papers_collection([dict_to_write_out, second_dict_to_write_out]))
     print("We're reading from the DB again")
+    docs = arxiv_recent_paper_docs_as_dicts()
+    print("docs read from DB")
+    print(docs)
+    print("We're clearing the DB of all documents.")
+    number_of_deleted_docs = clear_arxiv_recent_papers_collection_of_all_documents()
+    print("We deleted {num_docs_deleted} documents.".format(num_docs_deleted=number_of_deleted_docs))
     docs = arxiv_recent_paper_docs_as_dicts()
     print("docs read from DB")
     print(docs)
