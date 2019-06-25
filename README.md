@@ -8,8 +8,6 @@ It would be interesting to investigate the impacts of having the user experience
 
 This is a front-end for the content of https://arxiv.org/ that resembles a news paper. 
 
-Progress is ongoing. 
-
 ## Arichecture
 
 This repository contains 2 distinct functional sub-systems. 
@@ -18,7 +16,8 @@ This repository contains 2 distinct functional sub-systems.
 
 We need to be able to query for the names, abstracts, authors, etc. of recently published research shown on https://arxiv.org/.
 
-https://arxiv.org/ does not have an [API](https://en.wikipedia.org/wiki/Representational_state_transfer).
+~~https://arxiv.org/ does not have an [API](https://en.wikipedia.org/wiki/Representational_state_transfer).~~
+UPDATE: After progress on our ETL has already been completed, we learned about the existence of their [API](https://arxiv.org/help/api). Had this been known prior to the completion of our ETL utilities, then design decisions would have been made differently. 
 
 https://arxiv.org/ cannot provide it, so we must provide it via our [ETL](https://en.wikipedia.org/wiki/Extract,_transform,_load) functionality, the first of our 2 distinct functional sub-systems.
 
@@ -110,6 +109,7 @@ bash: ./arxiv_as_a_newspaper.py: Permission denied
 ```
 
 Try running this command from a directory that sees `arxiv_as_a_newspaper.py`:
+
 ```
 chmod +x arxiv_as_a_newspaper.py
 ```
