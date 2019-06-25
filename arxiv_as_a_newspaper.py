@@ -24,13 +24,14 @@ File Organization:
 
 import argparse
 import sys
+import etl_processing_utilities
 
 ###############
 # Main Runner #
 ###############
 
 def run_etl_process():
-    raise NotImplementedError("Support for run_etl_process is not yet implemented.")
+    etl_processing_utilities.run_etl_process()
     return None
 
 def write_etl_results_to_file(json_file):
