@@ -46,7 +46,7 @@ def _get_username_and_password():
 MONGO_DB_CONNECTION_URL_FORMAT_STRING = "mongodb+srv://{username}:{password}@arxiv-news-paper-v2tf1.mongodb.net/test?retryWrites=true&w=majority"
 
 def _arxiv_mongo_db_connection_url():
-    username, password = _get_username_and_password() # @todo handle bad authentication info gracefully
+    username, password = _get_username_and_password()
     username_quoted = urllib.parse.quote_plus(username)
     password_quoted = urllib.parse.quote_plus(password)
     mongo_db_connection_url = MONGO_DB_CONNECTION_URL_FORMAT_STRING.format(username=username_quoted, password=password_quoted)
@@ -72,9 +72,30 @@ def _arxiv_recent_papers_collection():
     arxiv_recent_papers_collection = pymongo.collection.Collection(db,RECENT_PAPERS_COLLECTION_NAME)
     return arxiv_recent_papers_collection
 
+def _error_is_authentication_error(error):
+    error_string = str(error)
+    error_is_authentication_error = (isinstance(error, pymongo.errors.OperationFailure) and "Authentication failed." == error_string) or \
+        (isinstance(error, pymongo.errors.ConfigurationError) and "A password is required." == error_string) or \
+        (isinstance(error, pymongo.errors.InvalidURI) and "The empty string is not valid username." == error_string)
+    return error_is_authentication_error
+
 def arxiv_recent_paper_docs_as_dicts():
-    arxiv_recent_papers_collection = _arxiv_recent_papers_collection()
-    arxiv_recent_paper_json_docs = [doc for doc in arxiv_recent_papers_collection.find({})]
+    number_of_attempts = 0
+    arxiv_recent_paper_json_docs = None
+    while arxiv_recent_paper_json_docs is None:
+        try:
+            arxiv_recent_papers_collection = _arxiv_recent_papers_collection()
+            arxiv_recent_paper_json_docs = [doc for doc in arxiv_recent_papers_collection.find({})]
+        except Exception as error:
+            if _error_is_authentication_error(error):
+                number_of_attempts += 1
+                _get_username_and_password.cache_clear()
+                _arxiv_mongo_db_client.cache_clear()
+                print("Attempt to authenticate with the given credentials failed.\n")
+                if number_of_attempts > 10:
+                    raise SystemExit("Could not connect to the DB after 10 attempts. Exiting.")
+            else:
+                raise Exception("Unexpected handled error: {error}".format(error=error))
     return arxiv_recent_paper_json_docs
 
 ###############
