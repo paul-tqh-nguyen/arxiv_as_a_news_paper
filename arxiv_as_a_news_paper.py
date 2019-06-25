@@ -83,9 +83,9 @@ def _determine_single_process_specified_by_args(args):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('-run-etl-process', action='store_true', help="To execute our ETL entire process (i.e. scraping https://arxiv.org/ and storing the results into our DB)")
+    parser.add_argument('-run-etl-process', action='store_true', help="To execute our ETL entire process (i.e. scraping https://arxiv.org/ and storing the results into our DB). You will be prompted for credentials to write to our DB.")
     parser.add_argument('-write-etl-results-to-file',default=None, type=str, metavar=("DESTINATION_JSON_FILE"),
-                        help="To execute our ETL process and write the results to a .json file rather than writing to our DB")
+                        help="To execute our ETL process and write the results to a .json file rather than writing to our DB.")
     parser.add_argument('-start-front-end-server', action='store_true', help="To simply use our front end interface (the info for the papers shown will be from our latest scrape of https://arxiv.org/).")
     parser.add_argument('-end-to-end', action='store_true', help="To run our entire end-to-end process (which is simply running our ETL process, writing the results to our DB, and then starting the front end server).")
     args = parser.parse_args()
