@@ -45,9 +45,13 @@ ARXIV_URL_CHINA_MIRROR = "http://cn.arxiv.org/"
 ARXIV_URL_GERMANY_MIRROR = "http://de.arxiv.org/"
 ARXIV_URL_INDIA_MIRROR = "http://in.arxiv.org/"
 
+def _remove_urls_likely_to_block_us_for_scraping(urls):
+    urls.remove(ARXIV_URL)
+    return urls
+
 def _arxiv_base_url():
     all_arxiv_urls = [ARXIV_URL, ARXIV_URL_CHINA_MIRROR, ARXIV_URL_GERMANY_MIRROR, ARXIV_URL_INDIA_MIRROR]
-    arxiv_urls_that_will_not_block_us = all_arxiv_urls.remove(ARXIV_URL)
+    arxiv_urls_that_will_not_block_us = _remove_urls_likely_to_block_us_for_scraping(all_arxiv_urls)
     arbitrary_arxiv_url_that_will_not_block_us = random.choice(arxiv_urls_that_will_not_block_us)
     return arbitrary_arxiv_url_that_will_not_block_us
 
