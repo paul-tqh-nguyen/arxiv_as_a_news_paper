@@ -46,9 +46,12 @@ ARXIV_URL_GERMANY_MIRROR = "http://de.arxiv.org/"
 ARXIV_URL_INDIA_MIRROR = "http://in.arxiv.org/"
 
 def _arxiv_base_url():
-    return random.choice([ARXIV_URL, ARXIV_URL_CHINA_MIRROR, ARXIV_URL_GERMANY_MIRROR, ARXIV_URL_INDIA_MIRROR])
+    all_arxiv_urls = [ARXIV_URL, ARXIV_URL_CHINA_MIRROR, ARXIV_URL_GERMANY_MIRROR, ARXIV_URL_INDIA_MIRROR]
+    arxiv_urls_that_will_not_block_us = all_arxiv_urls.remove(ARXIV_URL)
+    arbitrary_arxiv_url_that_will_not_block_us = random.choice(arxiv_urls_that_will_not_block_us)
+    return arbitrary_arxiv_url_that_will_not_block_us
 
-SECONDS_TO_WAIT_PRIOR_TO_HITTING_URL = 10
+SECONDS_TO_SLEEP_PRIOR_TO_HITTING_URL = 30
 
 @lru_cache(maxsize=8192)
 def _safe_get_text_at_url(url):
@@ -57,7 +60,7 @@ def _safe_get_text_at_url(url):
     max_number_of_attempts = 5
     while number_of_attempts < max_number_of_attempts and text == "":
         try:
-            time.sleep(SECONDS_TO_WAIT_PRIOR_TO_HITTING_URL)
+            time.sleep(SECONDS_TO_SLEEP_PRIOR_TO_HITTING_URL)
             get_response = requests.get(url)
             text = get_response.text
         except requests.exceptions.ConnectionError as err:
@@ -260,8 +263,6 @@ def _author_to_author_link_double_to_author_to_author_link_dictionary(author_to_
 
 def dicts_to_store_in_db_iterator():
     arxiv_recent_page_title_and_page_link_string_iterator = _arxiv_recent_page_title_and_page_link_string_iterator()
-    # @hack to reduce number of URLs we hit while debugging ; we don't want to get throttled
-    arxiv_recent_page_title_and_page_link_string_iterator = list(arxiv_recent_page_title_and_page_link_string_iterator)[0:2]
     for research_field, research_field_recent_page_link in arxiv_recent_page_title_and_page_link_string_iterator:
         print("Currently extracting information for research papers relevant to {research_field}.".format(research_field=research_field))
         dicts_to_store = _extract_info_from_recent_page_url_as_dicts(research_field_recent_page_link)

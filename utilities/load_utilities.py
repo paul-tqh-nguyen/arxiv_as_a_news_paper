@@ -69,15 +69,13 @@ def _clear_credentials_caches():
     _arxiv_mongo_db_client.cache_clear()
     return None
 
+def _print_authentication_failed_message():
+    print("Attempt to authenticate with the given credentials failed.\n")
+    return None
+
 ##############################
 # MongoDB Accessor Utilities #
 ##############################
-
-def _arxiv_recent_papers_collection():
-    client = _arxiv_mongo_db_client()
-    db = _arxic_recent_papers_db(client)
-    arxiv_recent_papers_collection = pymongo.collection.Collection(db,RECENT_PAPERS_COLLECTION_NAME)
-    return arxiv_recent_papers_collection
 
 def _error_is_authentication_error(error):
     error_string = str(error)
@@ -87,22 +85,44 @@ def _error_is_authentication_error(error):
     error_is_authentication_error =  credentials_cannot_be_authenticated or password_is_empty or username_is_empty        
     return error_is_authentication_error
 
-def arxiv_recent_paper_docs_as_dicts():
+def _ensure_that_collection_is_valid_wrt_authentication(collection):
+    is_valid = False
+    try:
+        is_valid = (collection.count_documents({}) is not None)
+    except Exception as error:
+        is_valid = False
+        if _error_is_authentication_error(error):
+            _clear_credentials_caches()
+        else:
+            raise Exception("Unexpected handled error: {error}".format(error=error))
+    return is_valid
+
+def _arxiv_recent_papers_collection():
     number_of_attempts = 0
-    arxiv_recent_paper_json_docs = None
-    while arxiv_recent_paper_json_docs is None:
+    max_number_of_attempts = 10
+    arxiv_recent_papers_collection_is_valid_wrt_authentication = False
+    while not arxiv_recent_papers_collection_is_valid_wrt_authentication and number_of_attempts < max_number_of_attempts:
+        number_of_attempts += 1
+        arxiv_recent_papers_collection = None
         try:
-            arxiv_recent_papers_collection = _arxiv_recent_papers_collection()
-            arxiv_recent_paper_json_docs = [doc for doc in arxiv_recent_papers_collection.find({})]
+            client = _arxiv_mongo_db_client()
+            db = _arxic_recent_papers_db(client)
+            arxiv_recent_papers_collection = pymongo.collection.Collection(db,RECENT_PAPERS_COLLECTION_NAME)
         except Exception as error:
             if _error_is_authentication_error(error):
-                number_of_attempts += 1
                 _clear_credentials_caches()
-                print("Attempt to authenticate with the given credentials failed.\n")
-                if number_of_attempts > 10:
-                    raise SystemExit("Could not connect to the DB after 10 attempts. Exiting.")
             else:
                 raise Exception("Unexpected handled error: {error}".format(error=error))
+        arxiv_recent_papers_collection_is_valid_wrt_authentication = arxiv_recent_papers_collection is not None and _ensure_that_collection_is_valid_wrt_authentication(arxiv_recent_papers_collection)
+        if not arxiv_recent_papers_collection_is_valid_wrt_authentication:
+            _print_authentication_failed_message()
+        if number_of_attempts >= max_number_of_attempts and not arxiv_recent_papers_collection_is_valid_wrt_authentication:
+            raise SystemExit("Could not connect to the DB after {max_number_of_attempts} attempts. Exiting.".format(max_number_of_attempts=max_number_of_attempts))
+    return arxiv_recent_papers_collection
+
+def arxiv_recent_paper_docs_as_dicts():
+    arxiv_recent_papers_collection = _arxiv_recent_papers_collection()
+    arxiv_recent_paper_json_docs = [doc for doc in arxiv_recent_papers_collection.find({})]
     return arxiv_recent_paper_json_docs
 
 #############################
