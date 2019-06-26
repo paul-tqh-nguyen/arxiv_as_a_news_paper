@@ -55,7 +55,7 @@ def _arxiv_base_url():
     arbitrary_arxiv_url_that_will_not_block_us = random.choice(arxiv_urls_that_will_not_block_us)
     return arbitrary_arxiv_url_that_will_not_block_us
 
-SECONDS_TO_SLEEP_PRIOR_TO_HITTING_URL = 30
+SECONDS_TO_SLEEP_PRIOR_TO_HITTING_URL = 5
 
 @lru_cache(maxsize=8192)
 def _safe_get_text_at_url(url):
@@ -272,6 +272,7 @@ def dicts_to_store_in_db_iterator():
         dicts_to_store = _extract_info_from_recent_page_url_as_dicts(research_field_recent_page_link)
         len_dicts_to_store = 0
         for dict_to_store in dicts_to_store:
+            dict_to_store["research_field"] = research_field
             len_dicts_to_store +=1
             yield dict_to_store
         print("Number of research papers found for {research_field}: {len_dicts_to_store}\n".format(research_field=research_field, len_dicts_to_store=len_dicts_to_store))
