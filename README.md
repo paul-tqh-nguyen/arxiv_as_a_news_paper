@@ -21,7 +21,7 @@ UPDATE: After progress on our ETL has already been completed, we learned about t
 
 https://arxiv.org/ cannot provide it, so we must provide it via our [ETL](https://en.wikipedia.org/wiki/Extract,_transform,_load) functionality, the first of our 2 distinct functional sub-systems.
 
-Our [ETL](https://en.wikipedia.org/wiki/Extract,_transform,_load) will scrape https://arxiv.org/ and store the information into a database that our front end will access. 
+Our [ETL](https://en.wikipedia.org/wiki/Extract,_transform,_load) will scrape https://arxiv.org/ (or a mirror, see https://arxiv.org/help/mirrors) and store the information into a database that our front end will access. 
 
 NOTE: The extraction process can take a long time as we want to avoid being throttled or blocked. 
 
