@@ -129,23 +129,27 @@ def arxiv_recent_paper_docs_as_dicts():
 # MongoDB Writing Utilities #
 #############################
 
-def write_write_documents_as_dicts_to_arxiv_recent_papers_collection(dicts):
+def write_documents_as_dicts_to_arxiv_recent_papers_collection(dicts):
+    '''
+    Returns number of documents stored
+    '''
     success_status = False
     arxiv_recent_papers_collection = _arxiv_recent_papers_collection()
-    arxiv_recent_papers_collection.insert(dicts)
-    success_status = True
-    return success_status
+    dicts = list(dicts)
+    arxiv_recent_papers_collection.insert_many(dicts)
+    number_of_documents_stored = len(dicts)
+    return number_of_documents_stored
 
 #######################################
 # MongoDB Document Deletion Utilities #
 #######################################
 
-def clear_arxiv_recent_papers_collection_of_all_documents():
+def clear_arxiv_recent_papers_collection_of_all_documents_in_research_field(research_field):
     '''
     Returns number of delected documents.
     '''
     arxiv_recent_papers_collection = _arxiv_recent_papers_collection()
-    deletion = arxiv_recent_papers_collection.delete_many({})
+    deletion = arxiv_recent_papers_collection.delete_many({"research_field" : research_field})
     deleted_count = deletion.deleted_count
     return deleted_count
 
@@ -156,24 +160,6 @@ def clear_arxiv_recent_papers_collection_of_all_documents():
 def main():
     print("This is the library for data loading utilities used in the ETL process of arxiv_as_a_newspaper. See https://github.com/paul-tqh-nguyen/arxiv_as_a_newspaper for more details.")
     # @todo remove all of the below once stability is reached.
-    docs = arxiv_recent_paper_docs_as_dicts()
-    print("docs read from DB")
-    print(docs)
-    input_to_write_out = input("Value to write out to DB: ")
-    dict_to_write_out = {'key' : input_to_write_out}
-    second_dict_to_write_out = {'key' : input_to_write_out*2}
-    print("we're about to write to the DB this dict: {dictionary}".format(dictionary=dict_to_write_out))
-    print(write_write_documents_as_dicts_to_arxiv_recent_papers_collection([dict_to_write_out, second_dict_to_write_out]))
-    print("We're reading from the DB again")
-    docs = arxiv_recent_paper_docs_as_dicts()
-    print("docs read from DB")
-    print(docs)
-    print("We're clearing the DB of all documents.")
-    number_of_deleted_docs = clear_arxiv_recent_papers_collection_of_all_documents()
-    print("We deleted {num_docs_deleted} documents.".format(num_docs_deleted=number_of_deleted_docs))
-    docs = arxiv_recent_paper_docs_as_dicts()
-    print("docs read from DB")
-    print(docs)
     return None
 
 if __name__ == '__main__':

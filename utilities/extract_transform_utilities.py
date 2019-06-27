@@ -265,17 +265,20 @@ def _author_to_author_link_double_to_author_to_author_link_dictionary(author_to_
 # Transformation Utilities #
 ############################
 
-def dicts_to_store_in_db_iterator():
+def _expand_dicts_to_store_with_research_field(dicts_to_store, research_field):
+    for dict_to_store in dicts_to_store:
+        dict_to_store["research_field"] = research_field
+        yield dict_to_store
+ 
+
+def research_field_and_dicts_to_store_in_db_pairs_iterator():
     arxiv_recent_page_title_and_page_link_string_iterator = _arxiv_recent_page_title_and_page_link_string_iterator()
     for research_field, research_field_recent_page_link in arxiv_recent_page_title_and_page_link_string_iterator:
         print("Currently extracting information for research papers relevant to {research_field}.".format(research_field=research_field))
-        dicts_to_store = _extract_info_from_recent_page_url_as_dicts(research_field_recent_page_link)
-        len_dicts_to_store = 0
-        for dict_to_store in dicts_to_store:
-            dict_to_store["research_field"] = research_field
-            len_dicts_to_store +=1
-            yield dict_to_store
-        print("Number of research papers found for {research_field}: {len_dicts_to_store}\n".format(research_field=research_field, len_dicts_to_store=len_dicts_to_store))
+        dicts_to_store_incomplete = _extract_info_from_recent_page_url_as_dicts(research_field_recent_page_link)
+        dicts_to_store = _expand_dicts_to_store_with_research_field(dicts_to_store_incomplete, research_field)
+        research_field_and_dicts_to_store_in_db_pair = (research_field, dicts_to_store)
+        yield research_field_and_dicts_to_store_in_db_pair
 
 ###############
 # Main Runner #

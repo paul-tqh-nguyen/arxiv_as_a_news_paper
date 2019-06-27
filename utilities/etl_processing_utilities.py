@@ -33,13 +33,12 @@ import utilities.extract_transform_utilities as extract_transform_utilities
 def run_etl_process():
     print("Starting scraping process.")
     print()
-    dicts_to_store_in_db_iterator = extract_transform_utilities.dicts_to_store_in_db_iterator()
-    dicts_to_store_in_db = list(dicts_to_store_in_db_iterator)
-    print("Clearing the external DB.")
-    load_utilities.clear_arxiv_recent_papers_collection_of_all_documents()
-    num_documents_to_be_stored = len(dicts_to_store_in_db)
-    print("Number of documents to be stored: {num_documents_to_be_stored}".format(num_documents_to_be_stored=num_documents_to_be_stored))
-    load_utilities.write_write_documents_as_dicts_to_arxiv_recent_papers_collection(dicts_to_store_in_db)
+    research_field_and_dicts_to_store_in_db_pairs_iterator = extract_transform_utilities.research_field_and_dicts_to_store_in_db_pairs_iterator()
+    for research_field, dicts_to_store in research_field_and_dicts_to_store_in_db_pairs_iterator:
+        print("Clearing the external DB of data relevant to the field that is {research_field}.".format(research_field=research_field))
+        load_utilities.clear_arxiv_recent_papers_collection_of_all_documents_in_research_field(research_field)
+        number_of_documents_stored = load_utilities.write_documents_as_dicts_to_arxiv_recent_papers_collection(dicts_to_store)
+        print("Number of documents to be stored: {number_of_documents_stored}".format(number_of_documents_stored=number_of_documents_stored))
     print("ETL Process has completed.")
     return None
 
