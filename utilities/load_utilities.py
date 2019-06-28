@@ -82,7 +82,8 @@ def _error_is_authentication_error(error):
     credentials_cannot_be_authenticated = (isinstance(error, pymongo.errors.OperationFailure) and "Authentication failed." == error_string)
     password_is_empty = (isinstance(error, pymongo.errors.ConfigurationError) and "A password is required." == error_string)
     username_is_empty = (isinstance(error, pymongo.errors.InvalidURI) and "The empty string is not valid username." == error_string)
-    error_is_authentication_error =  credentials_cannot_be_authenticated or password_is_empty or username_is_empty        
+    bad_auth_authentication_failed = (isinstance(error, pymongo.errors.OperationFailure) and "bad auth Authentication failed." == error)
+    error_is_authentication_error =  credentials_cannot_be_authenticated or password_is_empty or username_is_empty or bad_auth_authentication_failed
     return error_is_authentication_error
 
 def _ensure_that_collection_is_valid_wrt_authentication(collection):
