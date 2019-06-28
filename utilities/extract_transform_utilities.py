@@ -175,21 +175,24 @@ def _dwim_arxiv_mirror_link_to_main_site_link(link):
     dwimmed_link = dwimmed_link.replace(ARXIV_URL_INDIA_MIRROR, ARXIV_URL)
     return dwimmed_link
 
-def _dwim_author_to_author_link_dictionary_wrt_mirror_link(author_to_author_link_dictionary):
-    for author in author_to_author_link_dictionary.keys():
-        author_link = author_to_author_link_dictionary[author]
-        dwimmed_author_link = _dwim_arxiv_mirror_link_to_main_site_link(author_link)
-        author_to_author_link_dictionary[author] = dwimmed_author_link
-    return author_to_author_link_dictionary
+def _dwim_author_to_author_link_dictionaries_wrt_mirror_link(author_to_author_link_dictionaries):
+    dwimmed_author_to_author_link_dictionaries = []
+    for author_to_author_link_dictionary in author_to_author_link_dictionaries:
+        for author in author_to_author_link_dictionary.keys():
+            author_link = author_to_author_link_dictionary[author]
+            dwimmed_author_link = _dwim_arxiv_mirror_link_to_main_site_link(author_link)
+            author_to_author_link_dictionary[author] = dwimmed_author_link
+        dwimmed_author_to_author_link_dictionaries.append(author_to_author_link_dictionary)
+    return dwimmed_author_to_author_link_dictionaries
 
 def _recent_page_url_info_tuple_to_dict(info_tuple):
-    link_to_paper_page, title, author_to_author_link_dictionary, primary_subject, secondary_subjects_iterator, abstract = info_tuple
+    link_to_paper_page, title, author_to_author_link_dictionaries, primary_subject, secondary_subjects_iterator, abstract = info_tuple
     secondary_subjects = secondary_subjects_iterator
     link_to_paper_page = _dwim_arxiv_mirror_link_to_main_site_link(link_to_paper_page)
-    author_to_author_link_dictionary = _dwim_author_to_author_link_dictionary_wrt_mirror_link(author_to_author_link_dictionary)
+    author_to_author_link_dictionaries = _dwim_author_to_author_link_dictionaries_wrt_mirror_link(author_to_author_link_dictionaries)
     json_dict = {"page_link" : link_to_paper_page,
                  "research_paper_title" : title,
-                 "author_info" : author_to_author_link_dictionary, 
+                 "author_info" : author_to_author_link_dictionaries, 
                  "primary_subject" : primary_subject, 
                  "secondary_subjects" : secondary_subjects,
                  "abstract" : abstract}
