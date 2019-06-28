@@ -183,25 +183,40 @@ def _recent_page_url_info_tuple_to_dict(info_tuple):
 def _extract_info_from_recent_page_url(recent_page_url):
     tuple_without_abstract_iterator = _extract_info_without_abstract_from_recent_page_url(recent_page_url)
     result_iterator = map(_append_abstract_to_info_extracted_from_recent_page_url, tuple_without_abstract_iterator)
-    return result_iterator
+    valid_result_iterator = filter(lambda info_tuple: info_tuple is not None, result_iterator)
+    return valid_result_iterator
 
 def _append_abstract_to_info_extracted_from_recent_page_url(info_tuple):
     link_to_paper_page, title, author_to_author_link_dictionaries, primary_subject, secondary_subjects = info_tuple
+    print("link_to_paper_page")
+    print(link_to_paper_page)
     abstract = _abstract_text_from_arxiv_paper_url(link_to_paper_page)
-    info_tuple = (link_to_paper_page, title, author_to_author_link_dictionaries, primary_subject, secondary_subjects, abstract)
+    info_tuple = None
+    if abstract is not None:
+        info_tuple = (link_to_paper_page, title, author_to_author_link_dictionaries, primary_subject, secondary_subjects, abstract)
     return info_tuple
+
+def _text_claims_article_does_not_exist(text):
+    reg_ex_match_result = re.search("Article [0-9]*\.[0-9]* doesn't exist", text)
+    text_claims_article_does_not_exist = reg_ex_match_result is not None
+    return text_claims_article_does_not_exist
 
 def _abstract_text_from_arxiv_paper_url(paper_url):
     text = _safe_get_text_at_url(paper_url)
-    soup = BeautifulSoup(text, features="lxml")
-    abstract_block_quote = soup.find("blockquote", {"class": "abstract mathjax"})
-    abstract_span = abstract_block_quote.find("span", {"class": "descriptor"})
-    abstract_text_raw = abstract_span.next_sibling
-    abstract_text = abstract_text_raw.replace("\n", " ").strip()
+    url_points_to_non_existant_article = _text_claims_article_does_not_exist(text) 
+    abstract_text = None
+    if not url_points_to_non_existant_article:
+        soup = BeautifulSoup(text, features="lxml")
+        abstract_block_quote = soup.find("blockquote", {"class": "abstract mathjax"})
+        abstract_span = abstract_block_quote.find("span", {"class": "descriptor"})
+        abstract_text_raw = abstract_span.next_sibling
+        abstract_text = abstract_text_raw.replace("\n", " ").strip()
     return abstract_text
 
 def _extract_info_without_abstract_from_recent_page_url(recent_page_url):
-    '''The "Recent" page includes a bunch of papers. We return an iterator yielding tuples. The tuples are of the form (LINK_TO_PAPER_PAGE, TITLE, AUTHOR_TO_AUTHOR_LINK_DICTIONARIES, PRIMARY_SUBJECT, SECONDARY_SUBJECTS).'''
+    '''
+    The "Recent" page includes a bunch of papers. We return an iterator yielding tuples. The tuples are of the form (LINK_TO_PAPER_PAGE, TITLE, AUTHOR_TO_AUTHOR_LINK_DICTIONARIES, PRIMARY_SUBJECT, SECONDARY_SUBJECTS).
+    '''
     text = _safe_get_text_at_url(recent_page_url)
     soup = BeautifulSoup(text, features="lxml")
     definition_lists = soup.find_all('dl')
@@ -214,7 +229,7 @@ def _extract_info_tuple_iterator_from_recent_pages_definition_list(definition_li
     definition_terms = definition_list.find_all("dt")
     definition_descriptions = definition_list.find_all("dd")
     if not len(definition_terms) == len(definition_descriptions):
-        warn("{definition_list} could not be parsed properly".format(definition_list=definition_list), RuntimeWarning)
+        print("{definition_list} could not be parsed properly".format(definition_list=definition_list))
     else:
         term_description_doubles = zip(definition_terms, definition_descriptions)
         info_tuple_iterator = _extract_info_tuple_iterator_from_definition_term_description_doubles(term_description_doubles)
@@ -287,16 +302,10 @@ def research_field_and_dicts_to_store_in_db_pairs_iterator():
 def main():
     print("This is the library for extraction & transformation utilities used in the ETL process of arxiv_as_a_newspaper. See https://github.com/paul-tqh-nguyen/arxiv_as_a_newspaper for more details.")
     # @todo remove all of the below once stability is reached.
-    all_research_field_to_recent_page_link_doubles = list(_arxiv_recent_page_title_and_page_link_string_iterator())
-    print("all_research_field_to_recent_page_link_doubles")
-    print(all_research_field_to_recent_page_link_doubles)
-    first_research_field_to_recent_page_link_double = all_research_field_to_recent_page_link_doubles[0]
-    print("first_research_field_to_recent_page_link_double")
-    print(first_research_field_to_recent_page_link_double)
-    url = first_research_field_to_recent_page_link_double[1]
-    info_to_store_in_db = list(_extract_info_from_recent_page_url_as_dicts(url))
-    print("info_to_store_in_db")
-    print(info_to_store_in_db)
+    link_to_paper_page = "http://in.arxiv.org/abs/1906.08163"
+    print("link_to_paper_page")
+    print(link_to_paper_page)
+    abstract = _abstract_text_from_arxiv_paper_url(link_to_paper_page)
     return None
 
 if __name__ == '__main__':
