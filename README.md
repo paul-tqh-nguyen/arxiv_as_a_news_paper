@@ -100,6 +100,7 @@ sudo pip3 install pymongo
 sudo pip3 install dnspython
 sudo pip3 install lxml
 sudo pip3 install npm
+npm install boostrap
 ```
 
 ### [Linux](https://en.wikipedia.org/wiki/Linux) Lamentations
