@@ -17,6 +17,7 @@ This repository contains 2 distinct functional sub-systems.
 We need to be able to query for the names, abstracts, authors, etc. of recently published research shown on https://arxiv.org/.
 
 ~~https://arxiv.org/ does not have an [API](https://en.wikipedia.org/wiki/Representational_state_transfer).~~
+
 UPDATE: After progress on our ETL has already been completed, we learned about the existence of their [API](https://arxiv.org/help/api). Had this been known prior to the completion of our ETL utilities, then design decisions would have been made differently. 
 
 https://arxiv.org/ cannot provide it, so we must provide it via our [ETL](https://en.wikipedia.org/wiki/Extract,_transform,_load) functionality, the first of our 2 distinct functional sub-systems.
@@ -79,6 +80,8 @@ To run our entire end-to-end process (which is simply running our ETL process, w
 ./arxiv_as_a_newspaper.py -end-to-end
 ```
 
+NOTE: The ETL process can take a long time as we want to avoid being throttled or blocked. 
+
 ## Troubleshooting Tips
 
 This sections contains some tips for troubleshooting any installation or run-time problems. 
@@ -96,6 +99,7 @@ sudo pip3 install bs4
 sudo pip3 install pymongo
 sudo pip3 install dnspython
 sudo pip3 install lxml
+sudo pip3 install npm
 ```
 
 ### [Linux](https://en.wikipedia.org/wiki/Linux) Lamentations
