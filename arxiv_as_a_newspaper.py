@@ -25,6 +25,8 @@ File Organization:
 import argparse
 import sys
 import utilities.etl_processing_utilities as etl_processing_utilities
+import subprocess
+
 
 ###############
 # Main Runner #
@@ -39,7 +41,17 @@ def write_etl_results_to_file(json_file):
     return None
 
 def start_front_end_server():
-    raise NotImplementedError("Support for start_front_end_server is not yet implemented.")
+    print()
+    print("Please use a keyboard interrupt at anytime to exit.")
+    print()
+    try:
+        print("Installing libraries necessary for front end...")
+        subprocess.check_call("cd front_end/ && npm start", shell=True)
+        print("Starting front end server...")
+        subprocess.check_call("cd front_end/ && npm install", shell=True)
+    except KeyboardInterrupt as err:
+        print("\n\n")
+        print("Exiting front end interface.")
     return None
 
 def end_to_end():
