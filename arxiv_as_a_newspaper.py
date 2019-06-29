@@ -55,7 +55,16 @@ def start_front_end_server():
     return None
 
 def end_to_end():
-    raise NotImplementedError("Support for end_to_end is not yet implemented.")
+    print("Starting out End-To-End Process (i.e. performing the ETL then starting the front end server.")
+    print()
+    try:
+        print("Starting out ETL processing...")
+        run_etl_process()
+        print("Starting our front end interface...")
+        start_front_end_server()
+    except KeyboardInterrupt as err:
+        print("\n\n")
+        print("Exiting our End-To-End due to an interrupt.")
     return None
 
 VALID_SPECIFIABLE_PROCESSES = ["run_etl_process", "write_etl_results_to_file", "start_front_end_server", "end_to_end"]
