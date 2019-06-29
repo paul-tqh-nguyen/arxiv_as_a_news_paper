@@ -46,9 +46,9 @@ def start_front_end_server():
     print()
     try:
         print("Installing libraries necessary for front end...")
-        subprocess.check_call("cd front_end/ && npm install", shell=Tru
+        subprocess.check_call("cd front_end/ && npm install", shell=True)
         print("Starting front end server...")
-        subprocess.check_call("cd front_end/ && npm start", shell=True)e)
+        subprocess.check_call("cd front_end/ && npm start", shell=True)
     except KeyboardInterrupt as err:
         print("\n\n")
         print("Exiting front end interface.")
