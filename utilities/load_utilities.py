@@ -82,7 +82,7 @@ def _error_is_authentication_error(error):
     credentials_cannot_be_authenticated = (isinstance(error, pymongo.errors.OperationFailure) and "Authentication failed." == error_string)
     password_is_empty = (isinstance(error, pymongo.errors.ConfigurationError) and "A password is required." == error_string)
     username_is_empty = (isinstance(error, pymongo.errors.InvalidURI) and "The empty string is not valid username." == error_string)
-    bad_auth_authentication_failed = (isinstance(error, pymongo.errors.OperationFailure) and "bad auth Authentication failed." == error)
+    bad_auth_authentication_failed = (isinstance(error, pymongo.errors.OperationFailure) and "bad auth Authentication failed." == error_string)
     error_is_authentication_error =  credentials_cannot_be_authenticated or password_is_empty or username_is_empty or bad_auth_authentication_failed
     return error_is_authentication_error
 
@@ -160,7 +160,6 @@ def clear_arxiv_recent_papers_collection_of_all_documents_in_research_field(rese
 
 def main():
     print("This is the library for data loading utilities used in the ETL process of arxiv_as_a_newspaper. See https://github.com/paul-tqh-nguyen/arxiv_as_a_newspaper for more details.")
-    # @todo remove all of the below once stability is reached.
     return None
 
 if __name__ == '__main__':

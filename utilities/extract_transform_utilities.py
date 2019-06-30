@@ -55,19 +55,23 @@ def _arxiv_base_url():
     arbitrary_arxiv_url_that_will_not_block_us = random.choice(arxiv_urls_that_will_not_block_us)
     return arbitrary_arxiv_url_that_will_not_block_us
 
-SECONDS_TO_SLEEP_PRIOR_TO_HITTING_URL = 5
+SECONDS_TO_SLEEP_PRIOR_TO_HITTING_URL = 600
 
 @lru_cache(maxsize=8192)
 def _safe_get_text_at_url(url):
+    '''
+    This is not for general use and has specific cases for https://arxiv.org
+    '''
     text = ""
     number_of_attempts = 0
     max_number_of_attempts = 5
     while number_of_attempts < max_number_of_attempts and text == "":
         try:
             time.sleep(SECONDS_TO_SLEEP_PRIOR_TO_HITTING_URL)
-            get_response = requests.get(url)
+            get_response = requests.get(url, timeout=10)
             text = get_response.text
         except requests.exceptions.ConnectionError as err:
+            text = ""
             number_of_attempts += 1
             number_of_seconds_to_sleep = number_of_attempts * 10
             if number_of_attempts < max_number_of_attempts:
@@ -206,8 +210,6 @@ def _extract_info_from_recent_page_url(recent_page_url):
 
 def _append_abstract_to_info_extracted_from_recent_page_url(info_tuple):
     link_to_paper_page, title, author_to_author_link_dictionaries, primary_subject, secondary_subjects = info_tuple
-    print("link_to_paper_page")
-    print(link_to_paper_page)
     abstract = _abstract_text_from_arxiv_paper_url(link_to_paper_page)
     info_tuple = None
     if abstract is not None:
@@ -242,11 +244,22 @@ def _extract_info_without_abstract_from_recent_page_url(recent_page_url):
     result_iterator = functools.reduce(itertools.chain, info_tuple_iterators)
     return result_iterator
 
+def _text_demonstrates_error_with_paper_id(text):
+    text_demonstrates_error_with_paper_id = re.search("Error with [0-9]{4,8}\.[0-9]{2,8}", text)
+    return text_demonstrates_error_with_paper_id
+
 def _extract_info_tuple_iterator_from_recent_pages_definition_list(definition_list):
     info_tuple_iterator = None
     definition_terms = definition_list.find_all("dt")
     definition_descriptions = definition_list.find_all("dd")
-    if not len(definition_terms) == len(definition_descriptions):
+    definition_terms_texts = map(lambda definition_term: definition_term.text, definition_terms)
+    error_status_of_definition_terms = map(_text_demonstrates_error_with_paper_id, definition_terms_texts)
+    any_definition_term_reflects_error = any(error_status_of_definition_terms)
+    if any_definition_term_reflects_error:
+        info_tuple_iterator = iter([])
+        print("{definition_list} demonstrates that there was a server error that's preventing us from doing proper parsing.".format(definition_list=definition_list))
+    elif not len(definition_terms) == len(definition_descriptions):
+        info_tuple_iterator = iter([])
         print("{definition_list} could not be parsed properly".format(definition_list=definition_list))
     else:
         term_description_doubles = zip(definition_terms, definition_descriptions)
@@ -302,7 +315,6 @@ def _expand_dicts_to_store_with_research_field(dicts_to_store, research_field):
     for dict_to_store in dicts_to_store:
         dict_to_store["research_field"] = research_field
         yield dict_to_store
- 
 
 def research_field_and_dicts_to_store_in_db_pairs_iterator():
     arxiv_recent_page_title_and_page_link_string_iterator = _arxiv_recent_page_title_and_page_link_string_iterator()
@@ -319,11 +331,6 @@ def research_field_and_dicts_to_store_in_db_pairs_iterator():
 
 def main():
     print("This is the library for extraction & transformation utilities used in the ETL process of arxiv_as_a_newspaper. See https://github.com/paul-tqh-nguyen/arxiv_as_a_newspaper for more details.")
-    # @todo remove all of the below once stability is reached.
-    link_to_paper_page = "http://in.arxiv.org/abs/1906.08163"
-    print("link_to_paper_page")
-    print(link_to_paper_page)
-    abstract = _abstract_text_from_arxiv_paper_url(link_to_paper_page)
     return None
 
 if __name__ == '__main__':

@@ -48,8 +48,6 @@ def run_etl_process():
 
 def main():
     print("This is the library for initializing the ETL processes of arxiv_as_a_newspaper. See https://github.com/paul-tqh-nguyen/arxiv_as_a_newspaper for more details.")
-    # @todo remove all of the below once stability is reached.
-    run_etl_process()
     return None
 
 if __name__ == '__main__':
