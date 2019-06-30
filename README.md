@@ -40,7 +40,9 @@ Our front end UI is the crux of this project.
 
 Our front end displays from abstracts of recent papers shown on https://arxiv.org/ along with their authors, relevant research fields, etc. in a way that resembles a newspaper or the website of one.
 
-Our front end is implemented in [React](https://reactjs.org/). 
+Our front end is implemented in [React](https://reactjs.org/).
+
+Our front end connects to our DB via [MongoDB Stitch](https://medium.com/@nparsons08/mongodb-stitch-your-application-backend-delivered-as-a-service-7cf21d979ed). For more details on this implementation, see [Notes Regarding Stitch](https://github.com/paul-tqh-nguyen/arxiv_as_a_newspaper/wiki/Notes-Regarding-Stitch).
 
 ## Instructions For Use
 
@@ -125,3 +127,7 @@ See also these resources on [chmod](https://en.wikipedia.org/wiki/Chmod):
 * https://ss64.com/bash/chmod.html
 * https://linux.die.net/man/1/chmod
 * https://catcode.com/teachmod/
+
+### Check The Wiki
+
+We'll maintain more verbose and extensive documentation on our [wiki](https://github.com/paul-tqh-nguyen/arxiv_as_a_newspaper/wiki).
