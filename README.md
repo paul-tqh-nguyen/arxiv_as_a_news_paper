@@ -86,47 +86,12 @@ NOTE: The ETL process can take a long time as we want to avoid being throttled o
 
 ## Troubleshooting Tips
 
-This sections contains some tips for troubleshooting any installation or run-time problems. 
+This section contains some tips for troubleshooting any installation or run-time problems. 
+
+All of the notes below stem from troubles repoted by our end users and are stored on our [wiki](https://github.com/paul-tqh-nguyen/arxiv_as_a_newspaper/wiki).
 
 This list is incomplete. 
 
-All of the notes below stem from troubles repoted by our end users.
-
-### Debugging Dependencies
-
-Here is an incomplete list of commands that might come in useful if you're having trouble with missing libraries when attempting to use any of our tools:
-
-```
-sudo pip3 install bs4
-sudo pip3 install pymongo
-sudo pip3 install dnspython
-sudo pip3 install lxml
-sudo pip3 install npm
-```
-
-### [Linux](https://en.wikipedia.org/wiki/Linux) Lamentations
-
-This section includes tips for solving common [Linux](https://en.wikipedia.org/wiki/Linux) issues that have shown to come up when using our tools.
-
-#### `Permission denied` via `chmod` issues
-
-If you see any issues like this arise:
-
-```
-bash: ./arxiv_as_a_newspaper.py: Permission denied
-```
-
-Try running this command from a directory that sees `arxiv_as_a_newspaper.py`:
-
-```
-chmod +x arxiv_as_a_newspaper.py
-```
-
-See also these resources on [chmod](https://en.wikipedia.org/wiki/Chmod):
-* https://ss64.com/bash/chmod.html
-* https://linux.die.net/man/1/chmod
-* https://catcode.com/teachmod/
-
-### Check The Wiki
-
-We'll maintain more verbose and extensive documentation on our [wiki](https://github.com/paul-tqh-nguyen/arxiv_as_a_newspaper/wiki).
+Trouble Shooting Tips:
+* [Debugging Dependencies](https://github.com/paul-tqh-nguyen/arxiv_as_a_newspaper/wiki/Debugging-Dependencies)
+* [Linux Lamentations](https://github.com/paul-tqh-nguyen/arxiv_as_a_newspaper/wiki/Linux-Lamentations)
