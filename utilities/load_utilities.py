@@ -121,11 +121,6 @@ def _arxiv_recent_papers_collection():
             raise SystemExit("Could not connect to the DB after {max_number_of_attempts} attempts. Exiting.".format(max_number_of_attempts=max_number_of_attempts))
     return arxiv_recent_papers_collection
 
-def arxiv_recent_paper_docs_as_dicts():
-    arxiv_recent_papers_collection = _arxiv_recent_papers_collection()
-    arxiv_recent_paper_json_docs = [doc for doc in arxiv_recent_papers_collection.find({})]
-    return arxiv_recent_paper_json_docs
-
 #############################
 # MongoDB Writing Utilities #
 #############################

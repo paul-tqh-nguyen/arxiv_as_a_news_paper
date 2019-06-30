@@ -94,6 +94,12 @@ def _arxiv_main_page_text():
     arxiv_main_page_text = _safe_get_text_at_url(arxiv_base_url)
     return arxiv_main_page_text
 
+def _extract_text_and_link_string_from_arxiv_anchor_link(anchor_link):
+    link_text = anchor_link.text
+    relative_link_string = anchor_link.get("href")
+    absolute_relative_link_string = _concatenate_relative_link_to_arxiv_base_url(relative_link_string)
+    return (link_text, absolute_relative_link_string)
+
 def _arxiv_recent_page_title_and_page_link_string_iterator():
     '''
     Returns an iterator that yields tuples of the form (RESEARCH_FIELD_NAME, ARXIV_LINK_TO_RECENT_PAPERS_PAGE_RELEVANT_TO_FIELD), e.g. ('General Economics', 'https://arxiv.org/list/econ.GN/recent').
@@ -104,12 +110,6 @@ def _arxiv_recent_page_title_and_page_link_string_iterator():
     arxiv_recent_page_relevant_anchor_link_iterator = filter(_anchor_link_is_arxiv_recent_page_link_with_research_field_denoting_text, anchor_links)
     arxiv_recent_page_title_and_page_link_string_iterator = map(_extract_text_and_link_string_from_arxiv_anchor_link, arxiv_recent_page_relevant_anchor_link_iterator)
     return arxiv_recent_page_title_and_page_link_string_iterator
-
-def _extract_text_and_link_string_from_arxiv_anchor_link(anchor_link):
-    link_text = anchor_link.text
-    relative_link_string = anchor_link.get("href")
-    absolute_relative_link_string = _concatenate_relative_link_to_arxiv_base_url(relative_link_string)
-    return (link_text, absolute_relative_link_string)
 
 def _anchor_link_is_arxiv_recent_page_link_with_research_field_denoting_text(anchor_link):
     href_attribute = anchor_link.get("href")
