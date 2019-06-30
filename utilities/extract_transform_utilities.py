@@ -89,6 +89,13 @@ def _concatenate_relative_link_to_arxiv_base_url(relative_link):
 # arXiv Scraping Utilities for Main Page #
 ##########################################
 
+arxiv_recent_page_link_reg_ex = re.compile("/list/.+/recent")
+
+def _is_arxiv_recent_page_link(link_string):
+    string_pattern_match_result = arxiv_recent_page_link_reg_ex.match(link_string)
+    is_arxiv_recent_page_link = (string_pattern_match_result is not None)
+    return is_arxiv_recent_page_link
+
 def _arxiv_main_page_text():
     arxiv_base_url = _arxiv_base_url()
     arxiv_main_page_text = _safe_get_text_at_url(arxiv_base_url)
@@ -99,17 +106,6 @@ def _extract_text_and_link_string_from_arxiv_anchor_link(anchor_link):
     relative_link_string = anchor_link.get("href")
     absolute_relative_link_string = _concatenate_relative_link_to_arxiv_base_url(relative_link_string)
     return (link_text, absolute_relative_link_string)
-
-def _arxiv_recent_page_title_and_page_link_string_iterator():
-    '''
-    Returns an iterator that yields tuples of the form (RESEARCH_FIELD_NAME, ARXIV_LINK_TO_RECENT_PAPERS_PAGE_RELEVANT_TO_FIELD), e.g. ('General Economics', 'https://arxiv.org/list/econ.GN/recent').
-    '''
-    text = _arxiv_main_page_text()
-    soup = BeautifulSoup(text, features="lxml")
-    anchor_links = soup.find_all("a")
-    arxiv_recent_page_relevant_anchor_link_iterator = filter(_anchor_link_is_arxiv_recent_page_link_with_research_field_denoting_text, anchor_links)
-    arxiv_recent_page_title_and_page_link_string_iterator = map(_extract_text_and_link_string_from_arxiv_anchor_link, arxiv_recent_page_relevant_anchor_link_iterator)
-    return arxiv_recent_page_title_and_page_link_string_iterator
 
 def _anchor_link_is_arxiv_recent_page_link_with_research_field_denoting_text(anchor_link):
     href_attribute = anchor_link.get("href")
@@ -124,12 +120,16 @@ def _anchor_link_is_arxiv_recent_page_link_with_research_field_denoting_text(anc
     assert anchor_link_is_arxiv_recent_page_link_with_research_field_denoting_text is not None, "{function} logic is flawed.".format(function=_anchor_link_is_arxiv_recent_page_link_with_research_field_denoting_text)
     return anchor_link_is_arxiv_recent_page_link_with_research_field_denoting_text
 
-arxiv_recent_page_link_reg_ex = re.compile("/list/.+/recent")
-
-def _is_arxiv_recent_page_link(link_string):
-    string_pattern_match_result = arxiv_recent_page_link_reg_ex.match(link_string)
-    is_arxiv_recent_page_link = (string_pattern_match_result is not None)
-    return is_arxiv_recent_page_link
+def _arxiv_recent_page_title_and_page_link_string_iterator():
+    '''
+    Returns an iterator that yields tuples of the form (RESEARCH_FIELD_NAME, ARXIV_LINK_TO_RECENT_PAPERS_PAGE_RELEVANT_TO_FIELD), e.g. ('General Economics', 'https://arxiv.org/list/econ.GN/recent').
+    '''
+    text = _arxiv_main_page_text()
+    soup = BeautifulSoup(text, features="lxml")
+    anchor_links = soup.find_all("a")
+    arxiv_recent_page_relevant_anchor_link_iterator = filter(_anchor_link_is_arxiv_recent_page_link_with_research_field_denoting_text, anchor_links)
+    arxiv_recent_page_title_and_page_link_string_iterator = map(_extract_text_and_link_string_from_arxiv_anchor_link, arxiv_recent_page_relevant_anchor_link_iterator)
+    return arxiv_recent_page_title_and_page_link_string_iterator
 
 ###############################################
 # arXiv Scraping Utilities for "Recent" Pages #
