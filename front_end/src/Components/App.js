@@ -1,32 +1,40 @@
 
 import React, {Component} from 'react';
+import {parseArxivWebserviceForUniqueResearchFields} from './MiscComponentUtilities';
+import {HeaderRow}  from './HeaderRow';
+import {CenterFrame} from './CenterFrame';
+
+var arxivEndPoint = 'https://webhooks.mongodb-stitch.com/api/client/v2.0/app/arxivnewspaperfetcher-mkmia/service/arXivNewsPaperListener/incoming_webhook/webhook0';
 
 export class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            items: [],
+            researchFields: [],
+            allResearchPaperJSONObjects: [],
             isLoaded: false,
         };
     }
 
     componentDidMount() {
-        fetch('https://webhooks.mongodb-stitch.com/api/client/v2.0/app/arxivnewspaperfetcher-mkmia/service/arXivNewsPaperListener/incoming_webhook/webhook0')
+        let title = document.getElementsByTagName('title')[0];
+        title.innerText = `Recent Research as of ${(new Date()).toLocaleDateString()}`;
+        fetch(arxivEndPoint)
             .then(res => res.json())
-            .then(json => {         
-                console.log("json");
-                console.log(json);
+            .then(json => {
+                var researchFieldsViaJSON = parseArxivWebserviceForUniqueResearchFields(json);
                 this.setState({
-                    items: json,
+                    researchFields: researchFieldsViaJSON,
+                    allResearchPaperJSONObjects: json,
                     isLoaded: true,
                 });
             });
     }
 
     render() {
-        var {items, isLoaded} = this.state;
+        let {researchFields, allResearchPaperJSONObjects, isLoaded} = this.state;
         if(!isLoaded){
-            return(
+            return (
                 <div>
                   Loading arXiv papers...
                 </div>
@@ -35,18 +43,10 @@ export class App extends Component {
             return (
                 <div className="App">
                   Data has been loaded!
-                  <ul>
-                    {items.map(item =>(
-                        <li>
-                          Page Link: {item.page_link}
-                          <br/>
-                          research_paper_title: {item.research_paper_title}
-                          <br/>
-                          primary_subject: {item.primary_subject}
-                          <br/>
-                        </li>
-                    ))};
-                  </ul>
+                  <br/>
+                  <HeaderRow researchFields={researchFields}/>
+                  <br/>
+                  <CenterFrame researchPaperJSONObjects={allResearchPaperJSONObjects}/> {/* @todo make this only pass the current ones we want to display*/}
                 </div>
             );
         };
