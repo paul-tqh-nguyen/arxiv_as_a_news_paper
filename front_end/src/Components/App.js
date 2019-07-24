@@ -30,7 +30,7 @@ export class App extends Component {
 
     componentDidMount() {
         let title = document.getElementsByTagName('title')[0];
-        title.innerText = `Recent Research as of ${(new Date()).toLocaleDateString()}`;
+        title.innerText = `The ArXiv Archive`;
         fetch(arxivEndPoint)
             .then(res => res.json())
             .then(json => {
