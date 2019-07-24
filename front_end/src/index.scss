@@ -64,14 +64,36 @@
 	border: solid 1.5px black;
     }
     
-    #currently-shown-research-field {
-	align-items: center;
-	font-weight: bold;
-	justify-content: space-evenly;
-	text-align: center;
-	padding-top: 10px;
-	padding-bottom: 10px;
-	font-family: 'Libre Baskerville';
+    #research-field-row {
+	width:100%;
+	text-align:center;
+	
+	.move-research-field-left-link {
+	    padding-top: 15px;
+	    float:left;
+	    font-size: 0.9rem;
+	    justify-content: space-between;
+            text-align: left;
+	}
+	
+	.move-research-field-right-link {
+	    padding-top: 15px;
+	    float:right;
+	    font-size: 0.9rem;
+	    justify-content: space-between;
+            text-align: right;
+	}
+	
+	.currently-shown-research-field {
+	    display: inline-block;
+	    margin:0 auto;
+	    font-weight: bold;
+	    text-align: center;
+	    padding-top: 10px;
+	    padding-bottom: 10px;
+	    font-family: 'Libre Baskerville';
+	}
+    
     }
     
     #center-frame-column-container {
@@ -80,6 +102,9 @@
 	justify-content: space-between;
 	
 	.center-frame-column {
+	    padding-top: 0.5vw;
+	    padding-left: 15px;
+	    padding-right: 15px;
 	    flex-basis: 0;
 	    flex-grow: 1;
 	    display: flex;

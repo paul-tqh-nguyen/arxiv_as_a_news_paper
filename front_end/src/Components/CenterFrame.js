@@ -73,7 +73,11 @@ export class CenterFrame extends Component {
         let thirdColumnRendered = thirdColumnArticleJSONObjects.map(renderResearchPaperJSONObjectForDisplay);
         return <div id='center-frame'>
                  <div id='arxiv-title'>{'The ArXiv Archive'}</div>
-                 <div id='currently-shown-research-field'>{researchFieldOfCurrentlyDisplayedArticles}</div>
+                 <div id='research-field-row'>
+                   <span className='move-research-field-left-link'>{'Previous Research Field'}</span>
+                   <span className='currently-shown-research-field'>{researchFieldOfCurrentlyDisplayedArticles}</span>
+                   <span className='move-research-field-right-link'>{'Next Research Field'}</span>
+                 </div>
                  <hr id='title-divider'/>
                  <div id='center-frame-column-container'>
                    <div key={1} className='center-frame-column'>{firstColumnRendered}</div>
