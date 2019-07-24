@@ -22,23 +22,24 @@ function renderResearchPaperJSONObjectForDisplay(researchPaperJSONObject, index)
         function(authorInfoJSONOBject, authorIndex) {
             let {author, author_link} = authorInfoJSONOBject;
             return (
-                <span key={author.concat(parseInt(authorIndex))}>
+                <span className='article-author' key={author.concat(parseInt(authorIndex))}>
                   <a href={author_link}>{author}</a>{' '}
                 </span>
             );
         });
-    let subjects = [primary_subject].concat(secondary_subjects);
     return (
-        <div key={index}>
-          { research_paper_title && <a href={page_link} className='title'>{research_paper_title}</a> } {/* get this 'title' class working*/}
+        <div className='article' key={index}>
+          { research_paper_title && <span className='article-title'><a href={page_link} className='title'>{research_paper_title}</a></span> }
           <br/>
-          { renderedAuthorInfo }
-          <br/>
-          <strong>{ primary_subject /* abstract out this styling to a css class */}</strong>
-          { subjects && (', ') }
-          { subjects.join(', ') }
-          <br/>
-          { abstract }
+          <span className='article-author'>By: </span>{ renderedAuthorInfo }
+          <div className='article-subjects'>
+            Subjects: <span>{ primary_subject }</span>
+            { (secondary_subjects.length !== 0) && (', ') }
+            { secondary_subjects.join(', ') }
+          </div>
+          <div className='article-abstract'>
+            { abstract }
+          </div>
         </div>
     );
 }
