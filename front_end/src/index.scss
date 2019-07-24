@@ -1,27 +1,30 @@
 
+@import url('https://fonts.googleapis.com/css?family=Libre+Baskerville');
+
 #header-row {
     position: fixed;
-    top:0px;
-    right:0px;
-    left:0px;
-    height: 50px;
-
+    top: 0px;
+    right: 0px;
+    left: 0px;
+    height: 20px;
+    
     min-height: 28px;
-
+    
     color: white;
     background-color: black;
     
     display: flex;
     align-items: center;
-    padding: 12px 16px;
+    padding: 12px 12px;
     justify-content: space-between;
     z-index: 5000;
+    
     ul {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-evenly;
 	overflow: hidden;
-	line-height: 24px;
+	line-height: 14px;
 	font-size: 14px;
 	word-wrap: break-word;
 	padding: 0px;
@@ -30,6 +33,7 @@
 	font-weight: bold;
 	
 	li {
+	    font-family: 'Helvetica Neue','Helvetica Neue Light',Helvetica,Arial,'Lucida Grande',sans-serif;
 	    white-space: nowrap;
 	    list-style: none;
 	    margin-right: 50px;
@@ -37,36 +41,53 @@
 	    animation-duration: 3s;
 	}
     }
+}
+
+#center-frame {
+    width: 92vw;
+    padding-left: 2vw;
+    padding-right: 2vw;
     
-    .news-button {
-	background-color: #1f1f1f;
-	border: 0.5px solid #444;
-	border-radius: 4px;
-	padding: 6px 10px;
-	margin: 2px;
-	margin-right: 8px;
-	color: white;
-	min-width:18px;
-
-	&:hover {
-	    border-color: white;
-	}
-
-	&.search {
-	    min-width: 200px;
-	    color: black;
-	    background-color: white;
+    #arxiv-title {
+	font-size: 3rem;
+	align-items: center;
+	font-weight: bold;
+	justify-content: space-evenly;
+	text-align: center;
+	padding-top: 25px;
+	padding-bottom: 5px;
+	font-family: 'Libre Baskerville';
+    }
+    
+    #title-divider {
+	align-items: center;
+	border: solid 1.5px black;
+    }
+    
+    #currently-shown-research-field {
+	align-items: center;
+	font-weight: bold;
+	justify-content: space-evenly;
+	text-align: center;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	font-family: 'Libre Baskerville';
+    }
+    
+    #center-frame-column-container {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	
+	.center-frame-column {
+	    flex-basis: 0;
+	    flex-grow: 1;
+	    display: flex;
+	    flex-direction: column;
 	}
     }
 }
 
-.home-page-body-col {
-    flex-basis: 0;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-}
-  
 @keyframes fade-in-and-out-animation {
   0%   {opacity: 0.0;}
   20%  {opacity: 0.95;}
@@ -74,3 +95,4 @@
   80%  {opacity: 0.95;}
   100% {opacity: 0.0;}
 }
+
