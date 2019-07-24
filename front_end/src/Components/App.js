@@ -15,6 +15,7 @@ function uniquifyList (nonUniqueList) {
 function parseArxivWebserviceForUniqueResearchFields(json) {
     var researchFieldsNonUnique = json.map(researchPaperJSONObject => researchPaperJSONObject.research_field);
     var researchFields = uniquifyList(researchFieldsNonUnique);
+    researchFields.sort();
     return researchFields;
 };
 
