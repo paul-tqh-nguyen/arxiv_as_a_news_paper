@@ -3,6 +3,10 @@
 @import url('https://fonts.googleapis.com/css?family=Lora');
 @import url('https://fonts.googleapis.com/css?family=Noto Serif');
 
+#App {
+    padding-top: 28px;
+}
+
 #header-row {
     position: fixed;
     top: 0px;
@@ -71,19 +75,23 @@
 	text-align:center;
 	
 	.move-research-field-left-link {
+	    color: black;
+	    text-decoration: none;
 	    padding-top: 15px;
 	    float:left;
 	    font-size: 0.9rem;
 	    justify-content: space-between;
-            text-align: left;
+	    text-align: left;
 	}
 	
 	.move-research-field-right-link {
+	    color: black;
+	    text-decoration: none;
 	    padding-top: 15px;
 	    float:right;
 	    font-size: 0.9rem;
 	    justify-content: space-between;
-            text-align: right;
+	    text-align: right;
 	}
 	
 	.currently-shown-research-field {

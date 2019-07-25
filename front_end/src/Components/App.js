@@ -22,6 +22,8 @@ function parseArxivWebserviceForUniqueResearchFields(json) {
 export class App extends Component {
     constructor(props) {
         super(props);
+        this.goToNextResearchFieldMethod = this.goToNextResearchFieldMethod.bind(this);
+        this.goToPreviousResearchFieldMethod = this.goToPreviousResearchFieldMethod.bind(this);
         this.state = {
             researchFields: [],
             allResearchPaperJSONObjects: [],
@@ -38,15 +40,31 @@ export class App extends Component {
                 var researchFieldsViaJSON = parseArxivWebserviceForUniqueResearchFields(json);
                 this.setState({
                     researchFields: researchFieldsViaJSON,
-                    researchFieldOfCurrentlyDisplayedArticles: researchFieldsViaJSON[0],
+                    indexOfResearchFieldOfCurrentlyDisplayedArticles: 0,
                     allResearchPaperJSONObjects: json,
                     isLoaded: true,
                 });
             });
     }
 
+    goToNextResearchFieldMethod() {
+        let { researchFields, indexOfResearchFieldOfCurrentlyDisplayedArticles } = this.state;
+        let upperBound = researchFields.length-1;
+        this.setState({
+            indexOfResearchFieldOfCurrentlyDisplayedArticles: Math.min(indexOfResearchFieldOfCurrentlyDisplayedArticles+1, upperBound),
+        });
+    };
+
+    goToPreviousResearchFieldMethod() {
+        let { indexOfResearchFieldOfCurrentlyDisplayedArticles } = this.state;
+        let lowerBound = 0;
+        this.setState({
+            indexOfResearchFieldOfCurrentlyDisplayedArticles: Math.max(indexOfResearchFieldOfCurrentlyDisplayedArticles-1, lowerBound),
+        });
+    };
+    
     render() {
-        let {researchFields, researchFieldOfCurrentlyDisplayedArticles, allResearchPaperJSONObjects, isLoaded} = this.state;
+        let {researchFields, indexOfResearchFieldOfCurrentlyDisplayedArticles, allResearchPaperJSONObjects, isLoaded} = this.state;
         if(!isLoaded){
             return (
                 <div>
@@ -54,13 +72,16 @@ export class App extends Component {
                 </div>
             );
         } else {
+            let researchFieldOfCurrentlyDisplayedArticles = researchFields[indexOfResearchFieldOfCurrentlyDisplayedArticles];
             return (
-                <div className="App">
-                  Data has been loaded!
-                  <br/>
+                <div id="App">
                   <HeaderRow researchFields={researchFields}/>
-                  <br/>
-                  <CenterFrame researchFieldOfCurrentlyDisplayedArticles={researchFieldOfCurrentlyDisplayedArticles} researchPaperJSONObjects={allResearchPaperJSONObjects}/>
+                  <CenterFrame
+                      researchFieldOfCurrentlyDisplayedArticles={researchFieldOfCurrentlyDisplayedArticles}
+                      researchPaperJSONObjects={allResearchPaperJSONObjects}
+                      goToNextResearchFieldMethod={this.goToNextResearchFieldMethod}
+                      goToPreviousResearchFieldMethod={this.goToPreviousResearchFieldMethod}
+                  />
                 </div>
             );
         };
