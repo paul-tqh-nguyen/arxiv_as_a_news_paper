@@ -2,7 +2,7 @@
 import React, {Component} from 'react';
 
 const numShownHeaderRowLinks = 6;
-const numMillisecondsBetweenHeaderRowUpdates = 3000;
+const numMillisecondsBetweenHeaderRowUpdates = 8000;
 const numMillisecondsToWaitPriorToInitializingHeaderRowRotations = 500;
 
 export class HeaderRow extends Component {
@@ -15,7 +15,7 @@ export class HeaderRow extends Component {
             headerRowResearchFieldLoopingIntervalDelayer: null,
         };
     }
-
+    
     updateCurrentlyShownResearchFields() {
         let { firstShownResearchFieldIndex } = this.state;
         let { researchFields } = this.props;
@@ -48,9 +48,18 @@ export class HeaderRow extends Component {
     }
     
     render() {
+        let { firstShownResearchFieldIndex } = this.state;
+        let { goToResearchFieldAtIndexMethod } = this.props;
         return <div id='header-row'>
                  <ul className='news-link-ul'>
-                   {this.state.currentlyShownResearchFields.map(researchField => <li className='test' key={researchField}>{researchField}</li>)}
+                   {this.state.currentlyShownResearchFields.map(
+                       function(researchField, index) {
+                           let indexForCurrentResearchField = index+firstShownResearchFieldIndex;
+                           let goToCurrentResearchFieldFunction = function() {
+                               return goToResearchFieldAtIndexMethod(indexForCurrentResearchField);
+                           };
+                           return <li onClick={goToCurrentResearchFieldFunction} key={researchField}><a href={'#'.concat(parseInt(indexForCurrentResearchField))}>{researchField}</a></li>;
+                       })}
                  </ul>
                </div>;
     }

@@ -1,7 +1,6 @@
 
 @import url('https://fonts.googleapis.com/css?family=Libre+Baskerville');
 @import url('https://fonts.googleapis.com/css?family=Lora');
-@import url('https://fonts.googleapis.com/css?family=Noto Serif');
 
 #App {
     padding-top: 28px;
@@ -44,7 +43,12 @@
 	    list-style: none;
 	    margin-right: 50px;
 	    animation-name: fade-in-and-out-animation;
-	    animation-duration: 3s;
+	    animation-duration: 8s;
+	    
+	    a {
+		color: white;
+		text-decoration: none;
+	    }
 	}
     }
 }
@@ -74,24 +78,30 @@
 	width:100%;
 	text-align:center;
 	
-	.move-research-field-left-link {
+	.move-research-field-left {
 	    color: black;
 	    text-decoration: none;
-	    padding-top: 15px;
-	    float:left;
-	    font-size: 0.9rem;
+	    padding-top: 20px;
+	    float: left;
+	    font-size: 0.74rem;
 	    justify-content: space-between;
 	    text-align: left;
+	    cursor: pointer;
+	    font-weight: 600;
+	    font-family: 'Libre Baskerville','FranklinPro','FranklinITCProLight','Franklin Gothic Medium','Franklin Gothic','ITC Franklin Gothic','Apple SD Gothic Neo','Myriad Set Pro','Helvetica Neue','Helvetica Neue Light',Helvetica,Arial,'Lucida Grande',serif;
 	}
 	
-	.move-research-field-right-link {
+	.move-research-field-right {
 	    color: black;
 	    text-decoration: none;
-	    padding-top: 15px;
-	    float:right;
-	    font-size: 0.9rem;
+	    padding-top: 20px;
+	    float: right;
+	    font-size: 0.74rem;
 	    justify-content: space-between;
 	    text-align: right;
+	    cursor: pointer;
+	    font-weight: 600;
+	    font-family: 'Libre Baskerville','FranklinPro','FranklinITCProLight','Franklin Gothic Medium','Franklin Gothic','ITC Franklin Gothic','Apple SD Gothic Neo','Myriad Set Pro','Helvetica Neue','Helvetica Neue Light',Helvetica,Arial,'Lucida Grande',serif;
 	}
 	
 	.currently-shown-research-field {
@@ -101,7 +111,7 @@
 	    text-align: center;
 	    padding-top: 10px;
 	    padding-bottom: 10px;
-	    font-family: 'Libre Baskerville';
+	    font-family: 'Libre Baskerville','FranklinPro','FranklinITCProLight','Franklin Gothic Medium','Franklin Gothic','ITC Franklin Gothic','Apple SD Gothic Neo','Myriad Set Pro','Helvetica Neue','Helvetica Neue Light',Helvetica,Arial,'Lucida Grande',serif;
 	}
     
     }
@@ -145,7 +155,7 @@
 		.article-abstract {
 		    padding-top: 10px;
 		    font-size: 0.85rem;
-		    font-family: 'Noto Serif',sans-serif;
+		    font-family: sans-serif;
 		}
 		
 		.article-author {
