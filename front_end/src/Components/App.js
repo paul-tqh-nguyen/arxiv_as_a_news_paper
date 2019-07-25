@@ -1,6 +1,7 @@
 
 import React, {Component} from 'react';
 import {HeaderRow}  from './HeaderRow';
+import {SideNavigationBar} from './SideNavigationBar';
 import {CenterFrame} from './CenterFrame';
 
 var arxivEndPoint = 'https://webhooks.mongodb-stitch.com/api/client/v2.0/app/arxivnewspaperfetcher-mkmia/service/arXivNewsPaperListener/incoming_webhook/webhook0';
@@ -98,6 +99,7 @@ export class App extends Component {
             return (
                 <div id="App">
                   <HeaderRow goToResearchFieldAtIndexMethod={this.goToResearchFieldAtIndex} researchFields={researchFields}/>
+                  <SideNavigationBar goToResearchFieldAtIndexMethod={this.goToResearchFieldAtIndex} researchFields={researchFields}/>
                   <CenterFrame
                       researchFieldOfCurrentlyDisplayedArticles={researchFieldOfCurrentlyDisplayedArticles}
                       researchPaperJSONObjects={allResearchPaperJSONObjects}
