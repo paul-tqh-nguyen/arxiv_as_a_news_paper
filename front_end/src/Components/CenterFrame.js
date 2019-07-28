@@ -60,12 +60,26 @@ export class CenterFrame extends Component {
         let firstColumnArticleJSONObjects = [];
         let secondColumnArticleJSONObjects = [];
         let thirdColumnArticleJSONObjects = [];
-        JSONObjectsForCurrentlyDisplayedArticles.forEach(function(JSONObject, index) {
-            let indexForColumnToContainArticle = index % 3;
-            switch (indexForColumnToContainArticle) {
-            case 0: firstColumnArticleJSONObjects.push(JSONObject); break;
-            case 1: secondColumnArticleJSONObjects.push(JSONObject); break;
-            case 2: thirdColumnArticleJSONObjects.push(JSONObject); break;
+        let firstColumnHeightEstimation = 0;
+        let secondColumnHeightEstimation = 0;
+        let thirdColumnHeightEstimation = 0;
+        JSONObjectsForCurrentlyDisplayedArticles.forEach(function(JSONObject) {
+            let smallestCount = Math.min(firstColumnHeightEstimation, secondColumnHeightEstimation, thirdColumnHeightEstimation);
+            let { abstract, research_paper_title } = JSONObject;
+            let articleHeightEstimation = abstract.length + research_paper_title.length * 5;
+            switch (smallestCount) {
+            case firstColumnHeightEstimation:
+                firstColumnArticleJSONObjects.push(JSONObject);
+                firstColumnHeightEstimation += articleHeightEstimation;
+                break;
+            case secondColumnHeightEstimation:
+                secondColumnArticleJSONObjects.push(JSONObject);
+                secondColumnHeightEstimation += articleHeightEstimation;
+                break;
+            case thirdColumnHeightEstimation:
+                thirdColumnArticleJSONObjects.push(JSONObject);
+                thirdColumnHeightEstimation += articleHeightEstimation;
+                break;
             default: console.warn("Could not render main article columns correctly."); break;
             }
         });
