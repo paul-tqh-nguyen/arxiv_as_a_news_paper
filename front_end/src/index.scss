@@ -3,7 +3,36 @@
 @import url('https://fonts.googleapis.com/css?family=Lora');
 
 #App {
-    padding-top: 28px;
+    padding-top: 40px;
+}
+
+.side-navigation-bar-closed {
+    display: flex;
+    width: 27em;
+    height: 100%;
+    color: black;
+    float: left;
+    color: white;
+    background-color: black;
+    overflow: auto;
+    
+    position: fixed;
+    top: 40px;
+    right: 0px;
+    left: 0px;
+    
+    li {
+	list-style: none;
+	text-decoration: none;
+	padding-bottom: 8px;
+	
+	a {
+	    color: white;
+	    text-decoration: none;
+	    font-family: 'Helvetica Neue','Helvetica Neue Light',Helvetica,Arial,'Lucida Grande',sans-serif;
+	    font-weight: bold;
+	}
+    }
 }
 
 #header-row {
