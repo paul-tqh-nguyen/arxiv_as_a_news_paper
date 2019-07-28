@@ -66,7 +66,7 @@ export class CenterFrame extends Component {
         JSONObjectsForCurrentlyDisplayedArticles.forEach(function(JSONObject) {
             let smallestCount = Math.min(firstColumnHeightEstimation, secondColumnHeightEstimation, thirdColumnHeightEstimation);
             let { abstract, research_paper_title } = JSONObject;
-            let articleHeightEstimation = abstract.length + research_paper_title.length * 5;
+            let articleHeightEstimation = abstract.length + research_paper_title.length * 8 + 20;
             switch (smallestCount) {
             case firstColumnHeightEstimation:
                 firstColumnArticleJSONObjects.push(JSONObject);

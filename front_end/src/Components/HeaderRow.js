@@ -1,50 +1,49 @@
 
 import React, {Component} from 'react';
 
-const numShownHeaderRowLinks = 6;
 const numMillisecondsBetweenHeaderRowUpdates = 8000;
-const numMillisecondsToWaitPriorToInitializingHeaderRowRotations = 500;
+const headerRowFontSizeEstimateInPixels = 14;
 
 export class HeaderRow extends Component {
     constructor(props) {
         super(props);
         this.state = {
             firstShownResearchFieldIndex: 0,
+            numberOfResearchFieldsShownMostRecently: 0,
             currentlyShownResearchFields: [],
             headerRowResearchFieldLoopingInterval: null,
-            headerRowResearchFieldLoopingIntervalDelayer: null,
         };
     }
     
     updateCurrentlyShownResearchFields() {
-        let { firstShownResearchFieldIndex } = this.state;
+        let { firstShownResearchFieldIndex, numberOfResearchFieldsShownMostRecently } = this.state;
         let { researchFields } = this.props;
-        let maxIndex = researchFields.length;
-        let updatedFirstShownResearchFieldIndex = firstShownResearchFieldIndex+numShownHeaderRowLinks;
-        if (updatedFirstShownResearchFieldIndex >= maxIndex) {
-            updatedFirstShownResearchFieldIndex = 0;
+        let updatedFirstShownResearchFieldIndex = firstShownResearchFieldIndex+numberOfResearchFieldsShownMostRecently;
+        let estimatedNumberOfHeaderRowCharactersAvailable = window.innerWidth / headerRowFontSizeEstimateInPixels;
+        let nextResearchFieldsToShow = [];
+        while (estimatedNumberOfHeaderRowCharactersAvailable > 0) {
+            let nextResearchField = researchFields[updatedFirstShownResearchFieldIndex];
+            nextResearchFieldsToShow.push(nextResearchField);
+            updatedFirstShownResearchFieldIndex += 1;
+            estimatedNumberOfHeaderRowCharactersAvailable -= nextResearchField.length;
         }
-        let lastShownResearchFieldIndex = Math.min(maxIndex, updatedFirstShownResearchFieldIndex+numShownHeaderRowLinks);
         this.setState({
             firstShownResearchFieldIndex: updatedFirstShownResearchFieldIndex,
-            currentlyShownResearchFields: researchFields.slice(updatedFirstShownResearchFieldIndex, lastShownResearchFieldIndex)
+            currentlyShownResearchFields: nextResearchFieldsToShow,
         });
     }
     
     initializeHeaderRowResearchFieldLoopingInterval() {
+        this.updateCurrentlyShownResearchFields();
         this.headerRowResearchFieldLoopingInterval = setInterval(() => {this.updateCurrentlyShownResearchFields();}, numMillisecondsBetweenHeaderRowUpdates);
     }
     
     componentDidMount() {
-        this.headerRowResearchFieldLoopingIntervalDelayer = setTimeout(() => {
-            this.updateCurrentlyShownResearchFields();
-            this.initializeHeaderRowResearchFieldLoopingInterval();
-        }, numMillisecondsToWaitPriorToInitializingHeaderRowRotations);
+        this.initializeHeaderRowResearchFieldLoopingInterval();
     }
     
     componentWillUnmount() {
         clearInterval(this.headerRowResearchFieldLoopingInterval);
-        clearInterval(this.headerRowResearchFieldLoopingIntervalDelayer);
     }
     
     render() {
