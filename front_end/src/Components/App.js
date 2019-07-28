@@ -26,6 +26,7 @@ export class App extends Component {
         this.goToNextResearchFieldMethod = this.goToNextResearchFieldMethod.bind(this);
         this.goToPreviousResearchFieldMethod = this.goToPreviousResearchFieldMethod.bind(this);
         this.goToResearchFieldAtIndex = this.goToResearchFieldAtIndex.bind(this);
+        this.changeSideNavigationBarOpenState = this.changeSideNavigationBarOpenState.bind(this);
         this.state = {
             researchFields: [],
             allResearchPaperJSONObjects: [],
@@ -54,8 +55,17 @@ export class App extends Component {
                     indexOfResearchFieldOfCurrentlyDisplayedArticles: initialIndexOfResearchFieldOfCurrentlyDisplayedArticles,
                     allResearchPaperJSONObjects: json,
                     isLoaded: true,
+                    sideNavigationBarIsOpen: false,
                 });
             });
+    }
+
+    changeSideNavigationBarOpenState(){
+        let { sideNavigationBarIsOpen } = this.state;
+        let newSideNavigationBarOpenState = sideNavigationBarIsOpen ? false : true;
+        this.setState({
+            sideNavigationBarIsOpen: newSideNavigationBarOpenState,
+        });
     }
     
     goToResearchFieldAtIndex(index) {
@@ -86,7 +96,7 @@ export class App extends Component {
     };
     
     render() {
-        let {researchFields, indexOfResearchFieldOfCurrentlyDisplayedArticles, allResearchPaperJSONObjects, isLoaded} = this.state;
+        let { researchFields, indexOfResearchFieldOfCurrentlyDisplayedArticles, allResearchPaperJSONObjects, isLoaded, sideNavigationBarIsOpen } = this.state;
         if(!isLoaded){
             return (
                 <div>
@@ -98,13 +108,20 @@ export class App extends Component {
             window.location.hash = '#'.concat(indexOfResearchFieldOfCurrentlyDisplayedArticles.toString());
             return (
                 <div id="App">
-                  <HeaderRow goToResearchFieldAtIndexMethod={this.goToResearchFieldAtIndex} researchFields={researchFields}/>
-                  <SideNavigationBar goToResearchFieldAtIndexMethod={this.goToResearchFieldAtIndex} researchFields={researchFields}/>
+                  <HeaderRow
+                      goToResearchFieldAtIndexMethod={this.goToResearchFieldAtIndex}
+                      researchFields={researchFields}
+                  />
+                  <SideNavigationBar
+                      goToResearchFieldAtIndexMethod={this.goToResearchFieldAtIndex}
+                      researchFields={researchFields}
+                      sideNavigationBarIsOpen={sideNavigationBarIsOpen}/>
                   <CenterFrame
                       researchFieldOfCurrentlyDisplayedArticles={researchFieldOfCurrentlyDisplayedArticles}
                       researchPaperJSONObjects={allResearchPaperJSONObjects}
                       goToNextResearchFieldMethod={this.goToNextResearchFieldMethod}
                       goToPreviousResearchFieldMethod={this.goToPreviousResearchFieldMethod}
+                      SideNavigationBarOpenStateChangingMethod={this.changeSideNavigationBarOpenState}
                   />
                 </div>
             );

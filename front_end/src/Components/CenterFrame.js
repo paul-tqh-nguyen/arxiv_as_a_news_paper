@@ -55,7 +55,7 @@ export class CenterFrame extends Component {
     
     render() {
         let { researchFieldToResearchPaperJSONObjectsMapping } = this.state;
-        let { researchFieldOfCurrentlyDisplayedArticles, goToNextResearchFieldMethod, goToPreviousResearchFieldMethod } = this.props;
+        let { researchFieldOfCurrentlyDisplayedArticles, goToNextResearchFieldMethod, goToPreviousResearchFieldMethod, SideNavigationBarOpenStateChangingMethod } = this.props;
         let JSONObjectsForCurrentlyDisplayedArticles = researchFieldToResearchPaperJSONObjectsMapping[researchFieldOfCurrentlyDisplayedArticles];
         let firstColumnArticleJSONObjects = [];
         let secondColumnArticleJSONObjects = [];
@@ -76,7 +76,7 @@ export class CenterFrame extends Component {
                  <div id='arxiv-title'>{'The ArXiv Archive'}</div>
                  <div id='research-field-row'>
                    <span className='move-research-field-left' onClick={goToPreviousResearchFieldMethod}>{'Previous Research Field'}</span>
-                   <span className='currently-shown-research-field'>{researchFieldOfCurrentlyDisplayedArticles}</span>
+                   <span className='currently-shown-research-field' onClick={SideNavigationBarOpenStateChangingMethod}>{researchFieldOfCurrentlyDisplayedArticles}</span>
                    <span className='move-research-field-right' onClick={goToNextResearchFieldMethod}>{'Next Research Field'}</span>
                  </div>
                  <hr id='title-divider'/>
