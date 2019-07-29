@@ -72,6 +72,18 @@
     }
 }
 
+#side-bar-toggle {
+    color: black;
+    text-decoration: none;
+    padding-top: 15px;
+    float: right;
+    font-size: 0.74rem;
+    text-align: left;
+    cursor: pointer;
+    font-weight: 600;
+    font-family: 'Libre Baskerville','FranklinPro','FranklinITCProLight','Franklin Gothic Medium','Franklin Gothic','ITC Franklin Gothic','Apple SD Gothic Neo','Myriad Set Pro','Helvetica Neue','Helvetica Neue Light',Helvetica,Arial,'Lucida Grande',serif;
+}
+
 #header-row {
     position: fixed;
     top: 0px;
@@ -126,7 +138,7 @@
 	font-weight: bold;
 	justify-content: space-evenly;
 	text-align: center;
-	padding-top: 25px;
+	padding-top: 30px;
 	padding-bottom: 5px;
 	font-family: 'Libre Baskerville';
     }

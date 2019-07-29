@@ -119,6 +119,7 @@ export class App extends Component {
                                     goToNextResearchFieldMethod={this.goToNextResearchFieldMethod}
                                     goToPreviousResearchFieldMethod={this.goToPreviousResearchFieldMethod}
                                     SideNavigationBarOpenStateChangingMethod={this.changeSideNavigationBarOpenState}
+                                    sideNavigationBarIsOpen={sideNavigationBarIsOpen}
                                 />}
             </div>
         );

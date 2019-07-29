@@ -55,7 +55,8 @@ export class CenterFrame extends Component {
     
     render() {
         let { researchFieldToResearchPaperJSONObjectsMapping } = this.state;
-        let { researchFieldOfCurrentlyDisplayedArticles, goToNextResearchFieldMethod, goToPreviousResearchFieldMethod, SideNavigationBarOpenStateChangingMethod } = this.props;
+        let { researchFieldOfCurrentlyDisplayedArticles, goToNextResearchFieldMethod, goToPreviousResearchFieldMethod, SideNavigationBarOpenStateChangingMethod,
+              sideNavigationBarIsOpen } = this.props;
         let JSONObjectsForCurrentlyDisplayedArticles = researchFieldToResearchPaperJSONObjectsMapping[researchFieldOfCurrentlyDisplayedArticles];
         let firstColumnArticleJSONObjects = [];
         let secondColumnArticleJSONObjects = [];
@@ -86,12 +87,14 @@ export class CenterFrame extends Component {
         let firstColumnRendered = firstColumnArticleJSONObjects.map(renderResearchPaperJSONObjectForDisplay);
         let secondColumnRendered = secondColumnArticleJSONObjects.map(renderResearchPaperJSONObjectForDisplay);
         let thirdColumnRendered = thirdColumnArticleJSONObjects.map(renderResearchPaperJSONObjectForDisplay);
+        let toggleSideBarText = sideNavigationBarIsOpen ? "Close Side Bar" : "Navigate More Research Fields";
         return <div id='center-frame'>
+                 <div id='side-bar-toggle' onClick={SideNavigationBarOpenStateChangingMethod}>{toggleSideBarText}</div>
                  <div id='arxiv-title'>{'The ArXiv Archive'}</div>
                  <div id='research-field-row'>
-                   <span className='move-research-field-left' onClick={goToPreviousResearchFieldMethod}>{'Previous Research Field'}</span>
+                   <span className='move-research-field-left' onClick={goToPreviousResearchFieldMethod}>Previous Research Field</span>
                    <span className='currently-shown-research-field' onClick={SideNavigationBarOpenStateChangingMethod}>{researchFieldOfCurrentlyDisplayedArticles}</span>
-                   <span className='move-research-field-right' onClick={goToNextResearchFieldMethod}>{'Next Research Field'}</span>
+                   <span className='move-research-field-right' onClick={goToNextResearchFieldMethod}>Next Research Field</span>
                  </div>
                  <hr id='title-divider'/>
                  <div id='center-frame-column-container'>
