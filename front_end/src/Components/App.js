@@ -104,7 +104,7 @@ export class App extends Component {
         }
         return (
             <div id="app">
-              <LoadingScreen/>
+              <LoadingScreen dataIsLoaded={dataIsLoaded}/>
               { dataIsLoaded && <HeaderRow
                                     goToResearchFieldAtIndexMethod={this.goToResearchFieldAtIndex}
                                     researchFields={researchFields}

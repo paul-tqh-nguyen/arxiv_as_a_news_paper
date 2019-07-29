@@ -18,18 +18,17 @@ export class HeaderRow extends Component {
     updateCurrentlyShownResearchFields() {
         let { firstShownResearchFieldIndex, numberOfResearchFieldsShownMostRecently } = this.state;
         let { researchFields } = this.props;
-        let updatedFirstShownResearchFieldIndex = firstShownResearchFieldIndex+numberOfResearchFieldsShownMostRecently;
+        let updatedFirstShownResearchFieldIndex = ( firstShownResearchFieldIndex+numberOfResearchFieldsShownMostRecently ) % researchFields.length;
         let estimatedNumberOfHeaderRowCharactersAvailable = window.innerWidth / headerRowFontSizeEstimateInPixels;
         let nextResearchFieldsToShow = [];
         let nextResearchField = researchFields[updatedFirstShownResearchFieldIndex];
-        while (estimatedNumberOfHeaderRowCharactersAvailable-nextResearchField.length > 0 || nextResearchFieldsToShow.length == 0 ) {
+        do {
             updatedFirstShownResearchFieldIndex += 1;
-            if ( nextResearchField ) {
-                nextResearchFieldsToShow.push(nextResearchField);
-                estimatedNumberOfHeaderRowCharactersAvailable -= nextResearchField.length;
-            }
+            nextResearchFieldsToShow.push(nextResearchField);
+            estimatedNumberOfHeaderRowCharactersAvailable -= nextResearchField.length;
+            updatedFirstShownResearchFieldIndex = updatedFirstShownResearchFieldIndex % researchFields.length;
             nextResearchField = researchFields[updatedFirstShownResearchFieldIndex];
-        }
+        } while (estimatedNumberOfHeaderRowCharactersAvailable > nextResearchField.length );
         this.setState({
             firstShownResearchFieldIndex: updatedFirstShownResearchFieldIndex,
             currentlyShownResearchFields: nextResearchFieldsToShow,
