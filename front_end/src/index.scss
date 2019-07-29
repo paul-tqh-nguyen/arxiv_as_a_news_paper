@@ -2,8 +2,48 @@
 @import url('https://fonts.googleapis.com/css?family=Libre+Baskerville');
 @import url('https://fonts.googleapis.com/css?family=Lora');
 
-#App {
+#app {
     padding-top: 40px;
+}
+
+.loading-screen {
+    position: fixed;
+    top: 0px;
+    right: 0px;
+    left: 0px;
+    bottom: 0px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #525252;
+    z-index: 100;
+    float: top;
+}
+
+@keyframes loading-animation {
+    0% {
+	background-color: #525252;
+	padding-top: 200%;
+	padding-bottom: 0%;
+    }
+    1% {
+	background-color: #525252;
+	padding-top: 100%;
+	padding-bottom: 0%;
+    }
+    50% {
+	background-color: black;
+    }
+    99% {
+	background-color: #525252;
+	padding-top: 0%;
+	padding-bottom: 100%;
+    }
+    100% {
+	background-color: #525252;
+	padding-top: 0%;
+	padding-bottom: 200%;
+    }
 }
 
 .side-navigation-bar {
@@ -45,7 +85,6 @@
     top: 0px;
     right: 0px;
     left: 0px;
-    height: 20px;
     
     min-height: 28px;
     
@@ -56,7 +95,7 @@
     align-items: center;
     padding: 12px 10px;
     justify-content: space-between;
-    z-index: 5000;
+    z-index: 10;
     
     ul {
 	display: flex;

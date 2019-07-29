@@ -3,6 +3,7 @@ import React, {Component} from 'react';
 import {HeaderRow}  from './HeaderRow';
 import {SideNavigationBar} from './SideNavigationBar';
 import {CenterFrame} from './CenterFrame';
+import {LoadingScreen} from './LoadingScreen';
 
 var arxivEndPoint = 'https://webhooks.mongodb-stitch.com/api/client/v2.0/app/arxivnewspaperfetcher-mkmia/service/arXivNewsPaperListener/incoming_webhook/webhook0';
 
@@ -30,7 +31,7 @@ export class App extends Component {
         this.state = {
             researchFields: [],
             allResearchPaperJSONObjects: [],
-            isLoaded: false,
+            dataIsLoaded: false,
         };
     }
     
@@ -54,7 +55,7 @@ export class App extends Component {
                     researchFields: researchFieldsViaJSON,
                     indexOfResearchFieldOfCurrentlyDisplayedArticles: initialIndexOfResearchFieldOfCurrentlyDisplayedArticles,
                     allResearchPaperJSONObjects: json,
-                    isLoaded: true,
+                    dataIsLoaded: true,
                     sideNavigationBarIsOpen: false,
                 });
             });
@@ -96,36 +97,31 @@ export class App extends Component {
     };
     
     render() {
-        let { researchFields, indexOfResearchFieldOfCurrentlyDisplayedArticles, allResearchPaperJSONObjects, isLoaded, sideNavigationBarIsOpen } = this.state;
-        if(!isLoaded){
-            return (
-                <div>
-                  Loading arXiv papers...
-                </div>
-            );
-        } else {
-            let researchFieldOfCurrentlyDisplayedArticles = researchFields[indexOfResearchFieldOfCurrentlyDisplayedArticles];
+        let { researchFields, indexOfResearchFieldOfCurrentlyDisplayedArticles, allResearchPaperJSONObjects, dataIsLoaded, sideNavigationBarIsOpen } = this.state;
+        let researchFieldOfCurrentlyDisplayedArticles = researchFields[indexOfResearchFieldOfCurrentlyDisplayedArticles];
+        if ( dataIsLoaded ) {
             window.location.hash = '#'.concat(indexOfResearchFieldOfCurrentlyDisplayedArticles.toString());
-            return (
-                <div id="App">
-                  <HeaderRow
-                      goToResearchFieldAtIndexMethod={this.goToResearchFieldAtIndex}
-                      researchFields={researchFields}
-                  />
-                  <SideNavigationBar
-                      goToResearchFieldAtIndexMethod={this.goToResearchFieldAtIndex}
-                      researchFields={researchFields}
-                      sideNavigationBarIsOpen={sideNavigationBarIsOpen}/>
-                  <CenterFrame
-                      researchFieldOfCurrentlyDisplayedArticles={researchFieldOfCurrentlyDisplayedArticles}
-                      researchPaperJSONObjects={allResearchPaperJSONObjects}
-                      goToNextResearchFieldMethod={this.goToNextResearchFieldMethod}
-                      goToPreviousResearchFieldMethod={this.goToPreviousResearchFieldMethod}
-                      SideNavigationBarOpenStateChangingMethod={this.changeSideNavigationBarOpenState}
-                  />
-                </div>
-            );
-        };
+        }
+        return (
+            <div id="app">
+              <LoadingScreen/>
+              { dataIsLoaded && <HeaderRow
+                                    goToResearchFieldAtIndexMethod={this.goToResearchFieldAtIndex}
+                                    researchFields={researchFields}
+                                />}
+              { dataIsLoaded && <SideNavigationBar
+                                    goToResearchFieldAtIndexMethod={this.goToResearchFieldAtIndex}
+                                    researchFields={researchFields}
+                                    sideNavigationBarIsOpen={sideNavigationBarIsOpen}/>}
+              { dataIsLoaded && <CenterFrame
+                                    researchFieldOfCurrentlyDisplayedArticles={researchFieldOfCurrentlyDisplayedArticles}
+                                    researchPaperJSONObjects={allResearchPaperJSONObjects}
+                                    goToNextResearchFieldMethod={this.goToNextResearchFieldMethod}
+                                    goToPreviousResearchFieldMethod={this.goToPreviousResearchFieldMethod}
+                                    SideNavigationBarOpenStateChangingMethod={this.changeSideNavigationBarOpenState}
+                                />}
+            </div>
+        );
     }
 }
 

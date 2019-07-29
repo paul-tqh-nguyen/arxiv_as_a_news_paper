@@ -1,10 +1,11 @@
 
 import React, {Component} from 'react';
 
+
 export class SideNavigationBar extends Component {
     render() {
-        let { goToResearchFieldAtIndexMethod, researchFields, sideNavigationBarIsOpen } = this.props;
-        let classForRendering = sideNavigationBarIsOpen ? 'side-navigation-bar open' : 'side-navigation-bar closed';
+        let { goToResearchFieldAtIndexMethod, researchFields, open } = this.props;
+        let classForRendering = open ? 'side-navigation-bar open' : 'side-navigation-bar closed';
         return <div className={classForRendering}>
                  <ul className='side-navigation-bar-ul'>
                    {researchFields.map(
