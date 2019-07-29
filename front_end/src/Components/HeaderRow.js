@@ -19,7 +19,7 @@ export class HeaderRow extends Component {
         let { firstShownResearchFieldIndex, numberOfResearchFieldsShownMostRecently } = this.state;
         let { researchFields } = this.props;
         let updatedFirstShownResearchFieldIndex = ( firstShownResearchFieldIndex+numberOfResearchFieldsShownMostRecently ) % researchFields.length;
-        let estimatedNumberOfHeaderRowCharactersAvailable = window.innerWidth / headerRowFontSizeEstimateInPixels;
+        let estimatedNumberOfHeaderRowCharactersAvailable = window.innerWidth / headerRowFontSizeEstimateInPixels - 30;
         let nextResearchFieldsToShow = [];
         let currentlyShownResearchFieldIndex = updatedFirstShownResearchFieldIndex;
         let nextResearchField = researchFields[currentlyShownResearchFieldIndex];
@@ -61,14 +61,6 @@ export class HeaderRow extends Component {
                            let goToCurrentResearchFieldFunction = function() {
                                return goToResearchFieldAtIndexMethod(indexForCurrentResearchField);
                            };
-                           console.log("firstShownResearchFieldIndex");
-                           console.log(firstShownResearchFieldIndex);
-                           console.log("researchField");
-                           console.log(researchField);
-                           console.log("indexForCurrentResearchField");
-                           console.log(indexForCurrentResearchField);
-                           //console.log();
-                           //console.log();
                            return <li onClick={goToCurrentResearchFieldFunction} key={researchField}><a href={'#'.concat(parseInt(indexForCurrentResearchField))}>{researchField}</a></li>;
                        })}
                  </ul>
