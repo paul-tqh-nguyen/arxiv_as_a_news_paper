@@ -21,17 +21,19 @@ export class HeaderRow extends Component {
         let updatedFirstShownResearchFieldIndex = ( firstShownResearchFieldIndex+numberOfResearchFieldsShownMostRecently ) % researchFields.length;
         let estimatedNumberOfHeaderRowCharactersAvailable = window.innerWidth / headerRowFontSizeEstimateInPixels;
         let nextResearchFieldsToShow = [];
-        let nextResearchField = researchFields[updatedFirstShownResearchFieldIndex];
+        let currentlyShownResearchFieldIndex = updatedFirstShownResearchFieldIndex;
+        let nextResearchField = researchFields[currentlyShownResearchFieldIndex];
         do {
-            updatedFirstShownResearchFieldIndex += 1;
+            currentlyShownResearchFieldIndex += 1;
             nextResearchFieldsToShow.push(nextResearchField);
             estimatedNumberOfHeaderRowCharactersAvailable -= nextResearchField.length;
-            updatedFirstShownResearchFieldIndex = updatedFirstShownResearchFieldIndex % researchFields.length;
-            nextResearchField = researchFields[updatedFirstShownResearchFieldIndex];
+            currentlyShownResearchFieldIndex = currentlyShownResearchFieldIndex % researchFields.length;
+            nextResearchField = researchFields[currentlyShownResearchFieldIndex];
         } while (estimatedNumberOfHeaderRowCharactersAvailable > nextResearchField.length );
         this.setState({
             firstShownResearchFieldIndex: updatedFirstShownResearchFieldIndex,
             currentlyShownResearchFields: nextResearchFieldsToShow,
+            numberOfResearchFieldsShownMostRecently: nextResearchFieldsToShow.length,
         });
     }
     
@@ -59,6 +61,14 @@ export class HeaderRow extends Component {
                            let goToCurrentResearchFieldFunction = function() {
                                return goToResearchFieldAtIndexMethod(indexForCurrentResearchField);
                            };
+                           console.log("firstShownResearchFieldIndex");
+                           console.log(firstShownResearchFieldIndex);
+                           console.log("researchField");
+                           console.log(researchField);
+                           console.log("indexForCurrentResearchField");
+                           console.log(indexForCurrentResearchField);
+                           //console.log();
+                           //console.log();
                            return <li onClick={goToCurrentResearchFieldFunction} key={researchField}><a href={'#'.concat(parseInt(indexForCurrentResearchField))}>{researchField}</a></li>;
                        })}
                  </ul>
