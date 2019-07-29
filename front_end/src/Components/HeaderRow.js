@@ -22,7 +22,7 @@ export class HeaderRow extends Component {
         let estimatedNumberOfHeaderRowCharactersAvailable = window.innerWidth / headerRowFontSizeEstimateInPixels;
         let nextResearchFieldsToShow = [];
         let nextResearchField = researchFields[updatedFirstShownResearchFieldIndex];
-        while (estimatedNumberOfHeaderRowCharactersAvailable-nextResearchField.length > 0 || nextResearchFieldsToShow.legnth == 0 ) {
+        while (estimatedNumberOfHeaderRowCharactersAvailable-nextResearchField.length > 0 || nextResearchFieldsToShow.length == 0 ) {
             updatedFirstShownResearchFieldIndex += 1;
             if ( nextResearchField ) {
                 nextResearchFieldsToShow.push(nextResearchField);
