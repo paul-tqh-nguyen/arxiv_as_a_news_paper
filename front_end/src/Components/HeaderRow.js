@@ -2,7 +2,7 @@
 import React, {Component} from 'react';
 
 const numMillisecondsBetweenHeaderRowUpdates = 8000;
-const headerRowFontSizeEstimateInPixels = 14;
+const headerRowFontSizeEstimateInPixels = 10;
 
 export class HeaderRow extends Component {
     constructor(props) {
@@ -21,11 +21,14 @@ export class HeaderRow extends Component {
         let updatedFirstShownResearchFieldIndex = firstShownResearchFieldIndex+numberOfResearchFieldsShownMostRecently;
         let estimatedNumberOfHeaderRowCharactersAvailable = window.innerWidth / headerRowFontSizeEstimateInPixels;
         let nextResearchFieldsToShow = [];
-        while (estimatedNumberOfHeaderRowCharactersAvailable > 0) {
-            let nextResearchField = researchFields[updatedFirstShownResearchFieldIndex];
-            nextResearchFieldsToShow.push(nextResearchField);
+        let nextResearchField = researchFields[updatedFirstShownResearchFieldIndex];
+        while (estimatedNumberOfHeaderRowCharactersAvailable-nextResearchField.length > 0 || nextResearchFieldsToShow.legnth == 0 ) {
             updatedFirstShownResearchFieldIndex += 1;
-            estimatedNumberOfHeaderRowCharactersAvailable -= nextResearchField.length;
+            if ( nextResearchField ) {
+                nextResearchFieldsToShow.push(nextResearchField);
+                estimatedNumberOfHeaderRowCharactersAvailable -= nextResearchField.length;
+            }
+            nextResearchField = researchFields[updatedFirstShownResearchFieldIndex];
         }
         this.setState({
             firstShownResearchFieldIndex: updatedFirstShownResearchFieldIndex,
