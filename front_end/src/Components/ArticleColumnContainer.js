@@ -8,13 +8,13 @@ function renderResearchPaperJSONObjectForDisplay(researchPaperJSONObject, index)
             let {author, author_link} = authorInfoJSONOBject;
             return (
                 <span className='article-author' key={author.concat(parseInt(authorIndex))}>
-                  <a target="_blank" href={author_link}>{author}</a>{' '}
+                  <a target="_blank" rel="noopener noreferrer" href={author_link}>{author}</a>{' '}
                 </span>
             );
         });
     return (
         <div className='article' key={index}>
-          { research_paper_title && <span className='article-title'><a target="_blank" href={page_link} className='title'>{research_paper_title}</a></span> }
+          { research_paper_title && <span className='article-title'><a rel="noopener noreferrer" target="_blank" href={page_link} className='title'>{research_paper_title}</a></span> }
           <br/>
           <span className='article-author'>By: </span>{ renderedAuthorInfo }
           <div className='article-subjects'>
