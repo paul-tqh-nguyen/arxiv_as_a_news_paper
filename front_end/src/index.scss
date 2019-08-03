@@ -71,6 +71,11 @@
 	    text-decoration: none;
 	    font-family: 'Helvetica Neue','Helvetica Neue Light',Helvetica,Arial,'Lucida Grande',sans-serif;
 	    font-weight: bold;
+	    transition: color 0.5s;
+	    
+	    &:hover {
+		color: #828282;
+	    }
 	}
     }
 }
@@ -85,6 +90,11 @@
     cursor: pointer;
     font-weight: 600;
     font-family: 'Libre Baskerville','FranklinPro','FranklinITCProLight','Franklin Gothic Medium','Franklin Gothic','ITC Franklin Gothic','Apple SD Gothic Neo','Myriad Set Pro','Helvetica Neue','Helvetica Neue Light',Helvetica,Arial,'Lucida Grande',serif;
+    transition: color 1s;
+
+    &:hover {
+	color: #404040;
+    }
 }
 
 #header-row {
@@ -125,6 +135,11 @@
 	    a {
 		color: white;
 		text-decoration: none;
+		transition: color 1s;
+		
+		&:hover {
+		    color: #a8a8a8;
+		}
 	    }
 	}
     }
@@ -136,6 +151,7 @@
     padding-right: 2vw;
 
     #title-row {
+	
 	#arxiv-title {
 	    font-size: 3rem;
 	    align-items: center;
@@ -167,6 +183,11 @@
 		cursor: pointer;
 		font-weight: 600;
 		font-family: 'Libre Baskerville','FranklinPro','FranklinITCProLight','Franklin Gothic Medium','Franklin Gothic','ITC Franklin Gothic','Apple SD Gothic Neo','Myriad Set Pro','Helvetica Neue','Helvetica Neue Light',Helvetica,Arial,'Lucida Grande',serif;
+		transition: color 1s;
+		
+		&:hover {
+		    color: #404040;
+		}
 	    }
 	    
 	    .move-research-field-right {
@@ -180,17 +201,27 @@
 		cursor: pointer;
 		font-weight: 600;
 		font-family: 'Libre Baskerville','FranklinPro','FranklinITCProLight','Franklin Gothic Medium','Franklin Gothic','ITC Franklin Gothic','Apple SD Gothic Neo','Myriad Set Pro','Helvetica Neue','Helvetica Neue Light',Helvetica,Arial,'Lucida Grande',serif;
+		transition: color 1s;
+		
+		&:hover {
+		    color: #404040;
+		}
 	    }
 	    
 	    .currently-shown-research-field {
 		cursor: pointer;
 		display: inline-block;
-		margin:0 auto;
-		font-weight: bold;
+		margin: 0 auto;
+		font-weight: 600;
 		text-align: center;
 		padding-top: 10px;
 		padding-bottom: 10px;
 		font-family: 'Libre Baskerville','FranklinPro','FranklinITCProLight','Franklin Gothic Medium','Franklin Gothic','ITC Franklin Gothic','Apple SD Gothic Neo','Myriad Set Pro','Helvetica Neue','Helvetica Neue Light',Helvetica,Arial,'Lucida Grande',serif;
+		transition: color 1s;
+		
+		&:hover {
+		    color: #404040;
+		}
 	    }
 	    
 	}
@@ -256,7 +287,6 @@
 		}
 		
 		.article-title {
-		    
 		    a {
 			color: black;
 			text-decoration: none;
@@ -264,6 +294,11 @@
 			font-weight: 800;
 			font-style: italic;
 			font-family: 'Lora','FranklinPro','FranklinITCProLight','Franklin Gothic Medium','Franklin Gothic','ITC Franklin Gothic','Apple SD Gothic Neo','Myriad Set Pro','Helvetica Neue','Helvetica Neue Light',Helvetica,Arial,'Lucida Grande',serif;
+			transition: color 0.5s;
+			
+			&:hover {
+			    color: #404040;
+			}
 		    }
 		}
 	    }

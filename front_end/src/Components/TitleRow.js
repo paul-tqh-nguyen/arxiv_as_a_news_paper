@@ -6,7 +6,7 @@ export class TitleRow extends Component {
     render() {
         let { sideNavigationBarOpenStateChangingMethod, goToPreviousResearchFieldMethod, goToNextResearchFieldMethod, researchFieldOfCurrentlyDisplayedArticles,
               sideNavigationBarIsOpen } = this.props;
-        let toggleSideBarText = sideNavigationBarIsOpen ? "Close Side Bar" : "Navigate More Research Fields";
+        let toggleSideBarText = sideNavigationBarIsOpen ? "Navigate Fewer Research Fields" : "Navigate More Research Fields";
         return <div id='title-row'>
                   <div id='side-bar-toggle' onClick={sideNavigationBarOpenStateChangingMethod}>{toggleSideBarText}</div>
                   <div id='arxiv-title'>{titleText}</div>
