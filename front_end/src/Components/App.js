@@ -4,6 +4,7 @@ import {HeaderRow}  from './HeaderRow';
 import {SideNavigationBar} from './SideNavigationBar';
 import {CenterFrame} from './CenterFrame';
 import {LoadingScreen} from './LoadingScreen';
+import { titleText } from './MiscComponentUtilities';
 
 var arxivEndPoint = 'https://webhooks.mongodb-stitch.com/api/client/v2.0/app/arxivnewspaperfetcher-mkmia/service/arXivNewsPaperListener/incoming_webhook/webhook0';
 
@@ -37,7 +38,7 @@ export class App extends Component {
     
     componentDidMount() {
         let title = document.getElementsByTagName('title')[0];
-        title.innerText = `The ArXiv Archive`;
+        title.innerText = titleText;
         fetch(arxivEndPoint)
             .then(res => res.json())
             .then(json => {

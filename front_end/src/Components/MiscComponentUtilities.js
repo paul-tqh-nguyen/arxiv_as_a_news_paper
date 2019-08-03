@@ -1,6 +1,8 @@
 
 // Public Interface
 
+export const titleText = 'The ArXiv Archive';
+
 export function noOp() { return null; }
 
 export class DynamicInterval {

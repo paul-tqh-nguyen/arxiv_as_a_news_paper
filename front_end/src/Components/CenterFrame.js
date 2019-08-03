@@ -1,5 +1,6 @@
 
 import React, {Component} from 'react';
+import {titleText} from './MiscComponentUtilities';
 
 function indexResearchPaperJSONObjectsByResearchField(researchPaperJSONObjects) {
     let researchFieldToResearchPaperJSONObjectsMapping = {};
@@ -90,7 +91,7 @@ export class CenterFrame extends Component {
         let toggleSideBarText = sideNavigationBarIsOpen ? "Close Side Bar" : "Navigate More Research Fields";
         return <div id='center-frame'>
                  <div id='side-bar-toggle' onClick={SideNavigationBarOpenStateChangingMethod}>{toggleSideBarText}</div>
-                 <div id='arxiv-title'>{'The ArXiv Archive'}</div>
+                 <div id='arxiv-title'>{titleText}</div>
                  <div id='research-field-row'>
                    <span className='move-research-field-left' onClick={goToPreviousResearchFieldMethod}>Previous Research Field</span>
                    <span className='currently-shown-research-field' onClick={SideNavigationBarOpenStateChangingMethod}>{researchFieldOfCurrentlyDisplayedArticles}</span>
