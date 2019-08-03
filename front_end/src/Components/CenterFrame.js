@@ -31,7 +31,12 @@ export class CenterFrame extends Component {
         let { researchFieldToResearchPaperJSONObjectsMapping } = this.state;
         let { researchFieldOfCurrentlyDisplayedArticles, goToNextResearchFieldMethod, goToPreviousResearchFieldMethod, sideNavigationBarOpenStateChangingMethod,
               sideNavigationBarIsOpen } = this.props;
-        return <div id='center-frame'>
+        let closeSideNavigationBar = function() {
+            if ( sideNavigationBarIsOpen ) {
+                sideNavigationBarOpenStateChangingMethod();
+            }
+        };
+        return <div id='center-frame' onClick={closeSideNavigationBar}>
                  <TitleRow
                      sideNavigationBarOpenStateChangingMethod={sideNavigationBarOpenStateChangingMethod}
                      goToPreviousResearchFieldMethod={goToPreviousResearchFieldMethod}
