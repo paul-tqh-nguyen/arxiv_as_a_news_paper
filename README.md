@@ -20,7 +20,7 @@ We need to be able to query for the names, abstracts, authors, etc. of recently 
 
 UPDATE: After progress on our ETL has already been completed, we learned about the existence of their [API](https://arxiv.org/help/api). Had this been known prior to the completion of our ETL utilities, then design decisions would have been made differently. 
 
-https://arxiv.org/ cannot provide it, so we must provide it via our [ETL](https://en.wikipedia.org/wiki/Extract,_transform,_load) functionality, the first of our 2 distinct functional sub-systems.
+Our [ETL](https://en.wikipedia.org/wiki/Extract,_transform,_load) functionality, the first of our 2 distinct functional sub-systems, is what provides us access to the content from https://arxiv.org/.
 
 Our [ETL](https://en.wikipedia.org/wiki/Extract,_transform,_load) will scrape https://arxiv.org/ (or a mirror, see https://arxiv.org/help/mirrors) and store the information into a database that our front end will access. 
 
