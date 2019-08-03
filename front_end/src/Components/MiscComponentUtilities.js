@@ -3,41 +3,11 @@
 
 export const titleText = 'The ArXiv Archive';
 
-export function noOp() { return null; }
+export const arxivEndPoint = 'https://webhooks.mongodb-stitch.com/api/client/v2.0/app/arxivnewspaperfetcher-mkmia/service/arXivNewsPaperListener/incoming_webhook/webhook0';
 
-export class DynamicInterval {
-    constructor(initialIntervalTimeSegment, initialCallbackFunction) {
-        this.millisecondsBetweenCallbackCalls = initialIntervalTimeSegment || 1000;
-        this.running = false;
-        this.timeout = false;
-        this.callbackFunction = initialCallbackFunction || noOp;
-    }
-    
-    performCallbackCall() {
-        if(this.running) {
-            this.callbackFunction();
-            this.running = true;
-        }
-    }
-    
-    start() {
-        clearInterval(this.timeout);
-        this.running = true;
-        this.timeout = setTimeout(this.performCallbackCall, this.millisecondsBetweenCallbackCalls);
-    }
-    
-    stop() {
-        clearInterval(this.timeout);
-        this.running = false;
-    }
- 
-    setTimeInterval(newIntervalTimeSegment){
-        clearInterval(this.timeout);
-        this.millisecondsBetweenCallbackCalls = newIntervalTimeSegment || 1000;
-        this.start();
-    }
-
-    setCallbackFunction(newCallbackFunction){
-        this.callbackFunction = newCallbackFunction || noOp;
-    }
+export function uniquifyList (nonUniqueList) {
+    var uniqifiedList = nonUniqueList.filter(function(element, index){
+	return nonUniqueList.indexOf(element) >= index;
+    });
+    return uniqifiedList;
 }

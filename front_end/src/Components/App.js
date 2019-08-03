@@ -1,19 +1,10 @@
 
 import React, {Component} from 'react';
-import {HeaderRow}  from './HeaderRow';
-import {SideNavigationBar} from './SideNavigationBar';
-import {CenterFrame} from './CenterFrame';
 import {LoadingScreen} from './LoadingScreen';
-import {titleText} from './MiscComponentUtilities';
-
-var arxivEndPoint = 'https://webhooks.mongodb-stitch.com/api/client/v2.0/app/arxivnewspaperfetcher-mkmia/service/arXivNewsPaperListener/incoming_webhook/webhook0';
-
-function uniquifyList (nonUniqueList) {
-    var uniqifiedList = nonUniqueList.filter(function(element, index){
-	return nonUniqueList.indexOf(element) >= index;
-    });
-    return uniqifiedList;
-}
+import {HeaderRow}  from './HeaderRow';
+import {CenterFrame} from './CenterFrame';
+import {SideNavigationBar} from './SideNavigationBar';
+import {titleText, arxivEndPoint, uniquifyList} from './MiscComponentUtilities';
 
 function parseArxivWebserviceForUniqueResearchFields(json) {
     var researchFieldsNonUnique = json.map(researchPaperJSONObject => researchPaperJSONObject.research_field);
@@ -106,22 +97,24 @@ export class App extends Component {
         return (
             <div id="app">
               <LoadingScreen dataIsLoaded={dataIsLoaded}/>
-              { dataIsLoaded && <HeaderRow
-                                    goToResearchFieldAtIndexMethod={this.goToResearchFieldAtIndex}
-                                    researchFields={researchFields}
-                                />}
-              { dataIsLoaded && <SideNavigationBar
-                                    goToResearchFieldAtIndexMethod={this.goToResearchFieldAtIndex}
-                                    researchFields={researchFields}
-                                    sideNavigationBarIsOpen={sideNavigationBarIsOpen}/>}
-              { dataIsLoaded && <CenterFrame
-                                    researchFieldOfCurrentlyDisplayedArticles={researchFieldOfCurrentlyDisplayedArticles}
-                                    researchPaperJSONObjects={allResearchPaperJSONObjects}
-                                    goToNextResearchFieldMethod={this.goToNextResearchFieldMethod}
-                                    goToPreviousResearchFieldMethod={this.goToPreviousResearchFieldMethod}
-                                    SideNavigationBarOpenStateChangingMethod={this.changeSideNavigationBarOpenState}
-                                    sideNavigationBarIsOpen={sideNavigationBarIsOpen}
-                                />}
+              { dataIsLoaded &&
+                <div id='loaded-content'>
+                  <HeaderRow
+                      goToResearchFieldAtIndexMethod={this.goToResearchFieldAtIndex}
+                      researchFields={researchFields}/>
+                  <SideNavigationBar
+                      goToResearchFieldAtIndexMethod={this.goToResearchFieldAtIndex}
+                      researchFields={researchFields}
+                      sideNavigationBarIsOpen={sideNavigationBarIsOpen}/>
+                  <CenterFrame
+                      researchFieldOfCurrentlyDisplayedArticles={researchFieldOfCurrentlyDisplayedArticles}
+                      researchPaperJSONObjects={allResearchPaperJSONObjects}
+                      goToNextResearchFieldMethod={this.goToNextResearchFieldMethod}
+                      goToPreviousResearchFieldMethod={this.goToPreviousResearchFieldMethod}
+                      sideNavigationBarOpenStateChangingMethod={this.changeSideNavigationBarOpenState}
+                      sideNavigationBarIsOpen={sideNavigationBarIsOpen}
+                  />
+                </div>}
             </div>
         );
     }

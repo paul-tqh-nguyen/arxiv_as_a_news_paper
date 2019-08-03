@@ -6,6 +6,9 @@
     padding-top: 40px;
 }
 
+#loaded-content {
+}
+
 .loading-screen {
     position: fixed;
     top: 0px;
@@ -131,64 +134,67 @@
     width: 92vw;
     padding-left: 2vw;
     padding-right: 2vw;
-    
-    #arxiv-title {
-	font-size: 3rem;
-	align-items: center;
-	font-weight: bold;
-	justify-content: space-evenly;
-	text-align: center;
-	padding-top: 30px;
-	padding-bottom: 5px;
-	font-family: 'Libre Baskerville';
-    }
-    
-    #title-divider {
-	align-items: center;
-	border: solid 1.5px black;
-    }
-    
-    #current-research-field-display-row {
-	width:100%;
-	text-align:center;
-	
-	.move-research-field-left {
-	    color: black;
-	    text-decoration: none;
-	    padding-top: 20px;
-	    float: left;
-	    font-size: 0.74rem;
-	    justify-content: space-between;
-	    text-align: left;
-	    cursor: pointer;
-	    font-weight: 600;
-	    font-family: 'Libre Baskerville','FranklinPro','FranklinITCProLight','Franklin Gothic Medium','Franklin Gothic','ITC Franklin Gothic','Apple SD Gothic Neo','Myriad Set Pro','Helvetica Neue','Helvetica Neue Light',Helvetica,Arial,'Lucida Grande',serif;
-	}
-	
-	.move-research-field-right {
-	    color: black;
-	    text-decoration: none;
-	    padding-top: 20px;
-	    float: right;
-	    font-size: 0.74rem;
-	    justify-content: space-between;
-	    text-align: right;
-	    cursor: pointer;
-	    font-weight: 600;
-	    font-family: 'Libre Baskerville','FranklinPro','FranklinITCProLight','Franklin Gothic Medium','Franklin Gothic','ITC Franklin Gothic','Apple SD Gothic Neo','Myriad Set Pro','Helvetica Neue','Helvetica Neue Light',Helvetica,Arial,'Lucida Grande',serif;
-	}
-	
-	.currently-shown-research-field {
-	    cursor: pointer;
-	    display: inline-block;
-	    margin:0 auto;
+
+    #title-row {
+	#arxiv-title {
+	    font-size: 3rem;
+	    align-items: center;
 	    font-weight: bold;
+	    justify-content: space-evenly;
 	    text-align: center;
-	    padding-top: 10px;
-	    padding-bottom: 10px;
-	    font-family: 'Libre Baskerville','FranklinPro','FranklinITCProLight','Franklin Gothic Medium','Franklin Gothic','ITC Franklin Gothic','Apple SD Gothic Neo','Myriad Set Pro','Helvetica Neue','Helvetica Neue Light',Helvetica,Arial,'Lucida Grande',serif;
+	    padding-top: 30px;
+	    padding-bottom: 5px;
+	    font-family: 'Libre Baskerville';
 	}
-    
+	
+	#title-divider {
+	    align-items: center;
+	    border: solid 1.5px black;
+	}
+	
+	#current-research-field-display-row {
+	    width:100%;
+	    text-align:center;
+	    
+	    .move-research-field-left {
+		color: black;
+		text-decoration: none;
+		padding-top: 20px;
+		float: left;
+		font-size: 0.74rem;
+		justify-content: space-between;
+		text-align: left;
+		cursor: pointer;
+		font-weight: 600;
+		font-family: 'Libre Baskerville','FranklinPro','FranklinITCProLight','Franklin Gothic Medium','Franklin Gothic','ITC Franklin Gothic','Apple SD Gothic Neo','Myriad Set Pro','Helvetica Neue','Helvetica Neue Light',Helvetica,Arial,'Lucida Grande',serif;
+	    }
+	    
+	    .move-research-field-right {
+		color: black;
+		text-decoration: none;
+		padding-top: 20px;
+		float: right;
+		font-size: 0.74rem;
+		justify-content: space-between;
+		text-align: right;
+		cursor: pointer;
+		font-weight: 600;
+		font-family: 'Libre Baskerville','FranklinPro','FranklinITCProLight','Franklin Gothic Medium','Franklin Gothic','ITC Franklin Gothic','Apple SD Gothic Neo','Myriad Set Pro','Helvetica Neue','Helvetica Neue Light',Helvetica,Arial,'Lucida Grande',serif;
+	    }
+	    
+	    .currently-shown-research-field {
+		cursor: pointer;
+		display: inline-block;
+		margin:0 auto;
+		font-weight: bold;
+		text-align: center;
+		padding-top: 10px;
+		padding-bottom: 10px;
+		font-family: 'Libre Baskerville','FranklinPro','FranklinITCProLight','Franklin Gothic Medium','Franklin Gothic','ITC Franklin Gothic','Apple SD Gothic Neo','Myriad Set Pro','Helvetica Neue','Helvetica Neue Light',Helvetica,Arial,'Lucida Grande',serif;
+	    }
+	    
+	}
+	
     }
     
     #article-column-container {
