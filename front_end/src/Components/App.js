@@ -4,7 +4,7 @@ import {HeaderRow}  from './HeaderRow';
 import {SideNavigationBar} from './SideNavigationBar';
 import {CenterFrame} from './CenterFrame';
 import {LoadingScreen} from './LoadingScreen';
-import { titleText } from './MiscComponentUtilities';
+import {titleText} from './MiscComponentUtilities';
 
 var arxivEndPoint = 'https://webhooks.mongodb-stitch.com/api/client/v2.0/app/arxivnewspaperfetcher-mkmia/service/arXivNewsPaperListener/incoming_webhook/webhook0';
 

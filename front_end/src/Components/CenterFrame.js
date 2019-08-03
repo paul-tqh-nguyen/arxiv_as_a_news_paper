@@ -92,16 +92,16 @@ export class CenterFrame extends Component {
         return <div id='center-frame'>
                  <div id='side-bar-toggle' onClick={SideNavigationBarOpenStateChangingMethod}>{toggleSideBarText}</div>
                  <div id='arxiv-title'>{titleText}</div>
-                 <div id='research-field-row'>
+                 <div id='current-research-field-display-row'>
                    <span className='move-research-field-left' onClick={goToPreviousResearchFieldMethod}>Previous Research Field</span>
                    <span className='currently-shown-research-field' onClick={SideNavigationBarOpenStateChangingMethod}>{researchFieldOfCurrentlyDisplayedArticles}</span>
                    <span className='move-research-field-right' onClick={goToNextResearchFieldMethod}>Next Research Field</span>
                  </div>
                  <hr id='title-divider'/>
-                 <div id='center-frame-column-container'>
-                   <div key={1} className='center-frame-column'>{firstColumnRendered}</div>
-                   <div key={2} className='center-frame-column'>{secondColumnRendered}</div>
-                   <div key={3} className='center-frame-column'>{thirdColumnRendered}</div>
+                 <div id='article-column-container'>
+                   <div key={1} className='article-column'>{firstColumnRendered}</div>
+                   <div key={2} className='article-column'>{secondColumnRendered}</div>
+                   <div key={3} className='article-column'>{thirdColumnRendered}</div>
                  </div>
                </div>;
     }

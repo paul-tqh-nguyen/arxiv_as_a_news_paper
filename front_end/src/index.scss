@@ -26,7 +26,7 @@
     }
 }
 
-@keyframes loading-animation {
+@keyframes loading-screen-animation {
     0% {
 	background-color: white;
     }
@@ -116,7 +116,7 @@
 	    white-space: nowrap;
 	    list-style: none;
 	    margin-right: 50px;
-	    animation-name: fade-in-and-out-animation;
+	    animation-name: header-row-fade-in-and-out-animation;
 	    animation-duration: 8s;
 	    
 	    a {
@@ -148,7 +148,7 @@
 	border: solid 1.5px black;
     }
     
-    #research-field-row {
+    #current-research-field-display-row {
 	width:100%;
 	text-align:center;
 	
@@ -191,16 +191,16 @@
     
     }
     
-    #center-frame-column-container {
+    #article-column-container {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
 	
-	.center-frame-column + .center-frame-column {
+	.article-column + .article-column {
 	    border-left: 1px solid rgba(0, 0, 0, 0.15);
 	}
 	    
-	.center-frame-column {
+	.article-column {
 	    padding-left: 15px;
 	    padding-right: 15px;
 	    flex-basis: 0;
@@ -265,7 +265,7 @@
     }
 }
 
-@keyframes fade-in-and-out-animation {
+@keyframes header-row-fade-in-and-out-animation {
   0%   {opacity: 0.0;}
   20%  {opacity: 0.95;}
   50%  {opacity: 1.0;}
