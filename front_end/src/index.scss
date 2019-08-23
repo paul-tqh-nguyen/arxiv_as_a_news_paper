@@ -49,9 +49,10 @@
     float: left;
     overflow: auto;
     position: fixed;
-    top: 48px;
     right: 0px;
     transition: left 1s;
+    top: 48px;
+    height: calc(100% - 48px);
     
     &.open {
 	left: 0px;
