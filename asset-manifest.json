@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/arxiv_as_a_newspaper/static/css/main.078745b6.chunk.css",
+    "main.js": "/arxiv_as_a_newspaper/static/js/main.19e0c645.chunk.js",
+    "main.js.map": "/arxiv_as_a_newspaper/static/js/main.19e0c645.chunk.js.map",
+    "runtime~main.js": "/arxiv_as_a_newspaper/static/js/runtime~main.d44947d7.js",
+    "runtime~main.js.map": "/arxiv_as_a_newspaper/static/js/runtime~main.d44947d7.js.map",
+    "static/js/2.2668f2aa.chunk.js": "/arxiv_as_a_newspaper/static/js/2.2668f2aa.chunk.js",
+    "static/js/2.2668f2aa.chunk.js.map": "/arxiv_as_a_newspaper/static/js/2.2668f2aa.chunk.js.map",
+    "index.html": "/arxiv_as_a_newspaper/index.html",
+    "precache-manifest.2e73ccfed47fd48b74a721c81562dc13.js": "/arxiv_as_a_newspaper/precache-manifest.2e73ccfed47fd48b74a721c81562dc13.js",
+    "service-worker.js": "/arxiv_as_a_newspaper/service-worker.js",
+    "static/css/main.078745b6.chunk.css.map": "/arxiv_as_a_newspaper/static/css/main.078745b6.chunk.css.map"
+  }
+}
