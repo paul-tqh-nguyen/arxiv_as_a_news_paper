@@ -52,10 +52,10 @@ def start_front_end_server():
     return None
 
 def end_to_end():
-    print("Starting out End-To-End Process (i.e. performing the ETL then starting the front end server.")
+    print("Starting out End-To-End Process (i.e. performing the ETL then starting the front end server).")
     print()
     try:
-        print("Starting out ETL processing...")
+        print("Starting our ETL processing...")
         run_etl_process()
         print("Starting our front end interface...")
         start_front_end_server()
@@ -64,7 +64,23 @@ def end_to_end():
         print("Exiting our End-To-End due to an interrupt.")
     return None
 
-VALID_SPECIFIABLE_PROCESSES = ["run_etl_process", "start_front_end_server", "end_to_end"]
+def deploy():
+    print("Deploying local front end changes to our demo site at https://paul-tqh-nguyen.github.io/arxiv_as_a_newspaper/")
+    print()
+    print("Credentials may be requested.")
+    print()
+    try:
+        print("Starting deployment...")
+        print()
+        subprocess.check_call("cd front_end/ && npm run deploy", shell=True)
+        print()
+        print("Deployment finished!")
+    except KeyboardInterrupt as err:
+        print("\n\n")
+        print("Exiting deployment attempt due to an interrupt. Localc changes may or may not have been successfully deployed.")
+    return None
+
+VALID_SPECIFIABLE_PROCESSES = ["run_etl_process", "start_front_end_server", "end_to_end", "deploy"]
 
 def _determine_all_processes_specified_by_script_args(args):
     arg_to_value_map = vars(args)
@@ -72,7 +88,8 @@ def _determine_all_processes_specified_by_script_args(args):
     for arg, value in arg_to_value_map.items():
         if (arg == "run_etl_process" and value == True) or \
            (arg == "start_front_end_server" and value == True) or \
-           (arg == "end_to_end" and value == True):
+           (arg == "end_to_end" and value == True) or \
+           (arg == "deploy" and value == True):
             processes_specified.append(arg)
         elif not arg in VALID_SPECIFIABLE_PROCESSES:
             raise SystemExit("Cannot handle input arg {bad_arg}.".format(bad_arg=arg))
@@ -104,6 +121,7 @@ def main():
     parser.add_argument('-run-etl-process', action='store_true', help="To execute our ETL entire process (i.e. scraping https://arxiv.org/ and storing the results into our DB). You will be prompted for credentials to write to our DB.")
     parser.add_argument('-start-front-end-server', action='store_true', help="To simply use our front end interface (the info for the papers shown will be from our latest scrape of https://arxiv.org/).")
     parser.add_argument('-end-to-end', action='store_true', help="To run our entire end-to-end process (which is simply running our ETL process, writing the results to our DB, and then starting the front end server).")
+    parser.add_argument('-deploy', action='store_true', help="To deploy local front end changes to our demo site at https://paul-tqh-nguyen.github.io/arxiv_as_a_newspaper/.")
     args = parser.parse_args()
     try:
         process = _determine_single_process_specified_by_args(args)
@@ -120,6 +138,8 @@ def main():
         start_front_end_server()
     elif process == "end_to_end":
         end_to_end()
+    elif process == "deploy":
+        deploy()
     else:
         raise SystemExit("Unexpected case reached. Please report an issue to https://github.com/paul-tqh-nguyen/arxiv_as_a_newspaper stating that arxiv_as_a_news_paper.py could not handle the args specified by {args}.".format(args=args))
     return None
