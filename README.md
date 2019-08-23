@@ -60,12 +60,6 @@ To execute our ETL entire process (i.e. scraping https://arxiv.org/ and storing 
 
 You will be prompted for credentials to write to our DB.
 
-To execute our ETL process and write the results to a `.json` file rather than writing to our DB, run the following command from the top most level of the checkout:
-
-```
-./arxiv_as_a_newspaper.py -write-etl-results-to-file <destiation.json>
-```
-
 ### Front End Only Instructions
 
 If you want to simply use our front end interface (the info for the papers shown will be from our latest scrape of https://arxiv.org/), run the following command from the top most level of the checkout:
