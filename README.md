@@ -6,7 +6,9 @@ We treat it as a news source.
 
 It would be interesting to investigate the impacts of having the user experience of https://arxiv.org/ match that of older or more traditional news sources. 
 
-This is a front-end for the content of https://arxiv.org/ that resembles a news paper. 
+This is a front-end for the content of https://arxiv.org/ that resembles a news paper.
+
+A demo is available at https://paul-tqh-nguyen.github.io/arxiv_as_a_newspaper/ for the front-end functionality.
 
 ## Arichecture
 
@@ -67,6 +69,15 @@ If you want to simply use our front end interface (the info for the papers shown
 ```
 ./arxiv_as_a_newspaper.py -start-front-end-server
 ```
+
+### Front End Deployment Instructions
+
+If local changes are made to the front end functionality, we can deploy them to our demo site at https://paul-tqh-nguyen.github.io/arxiv_as_a_newspaper/ via the following command:
+```
+./arxiv_as_a_newspaper.py -deploy
+```
+
+Credentials are required.
 
 ### End-To-End Instructions
 
