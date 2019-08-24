@@ -31,11 +31,11 @@ import subprocess
 # Main Runner #
 ###############
 
-def run_etl_process():
+def _run_etl_process():
     etl_processing_utilities.run_etl_process()
     return None
 
-def start_front_end_server():
+def _start_front_end_server():
     print()
     print("Please use a keyboard interrupt at anytime to exit.")
     print()
@@ -51,20 +51,20 @@ def start_front_end_server():
         print("Exiting front end interface.")
     return None
 
-def end_to_end():
+def _end_to_end():
     print("Starting out End-To-End Process (i.e. performing the ETL then starting the front end server).")
     print()
     try:
         print("Starting our ETL processing...")
-        run_etl_process()
+        _run_etl_process()
         print("Starting our front end interface...")
-        start_front_end_server()
+        _start_front_end_server()
     except KeyboardInterrupt as err:
         print("\n\n")
         print("Exiting our End-To-End due to an interrupt.")
     return None
 
-def deploy():
+def _deploy():
     print("Deploying local front end changes to our demo site at https://paul-tqh-nguyen.github.io/arxiv_as_a_newspaper/")
     print()
     print("Credentials may be requested.")
@@ -133,13 +133,13 @@ def main():
     if process is None:
         raise SystemExit("Input args to arxiv_as_a_news_paper.py are invalid.")
     elif process == "run_etl_process":
-        run_etl_process()
+        _run_etl_process()
     elif process == "start_front_end_server":
-        start_front_end_server()
+        _start_front_end_server()
     elif process == "end_to_end":
-        end_to_end()
+        _end_to_end()
     elif process == "deploy":
-        deploy()
+        _deploy()
     else:
         raise SystemExit("Unexpected case reached. Please report an issue to https://github.com/paul-tqh-nguyen/arxiv_as_a_newspaper stating that arxiv_as_a_news_paper.py could not handle the args specified by {args}.".format(args=args))
     return None
