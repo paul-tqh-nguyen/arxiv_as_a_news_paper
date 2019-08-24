@@ -29,8 +29,9 @@ export class CenterFrame extends Component {
     
     render() {
         let { researchFieldToResearchPaperJSONObjectsMapping } = this.state;
-        let { researchFieldOfCurrentlyDisplayedArticles, goToNextResearchFieldMethod, goToPreviousResearchFieldMethod, sideNavigationBarOpenStateChangingMethod,
+        let { researchFields, indexOfResearchFieldOfCurrentlyDisplayedArticles, goToNextResearchFieldMethod, goToPreviousResearchFieldMethod, sideNavigationBarOpenStateChangingMethod, 
               sideNavigationBarIsOpen } = this.props;
+        let researchFieldOfCurrentlyDisplayedArticles = researchFields[indexOfResearchFieldOfCurrentlyDisplayedArticles];
         let closeSideNavigationBar = function() {
             if ( sideNavigationBarIsOpen ) {
                 sideNavigationBarOpenStateChangingMethod();
@@ -41,7 +42,8 @@ export class CenterFrame extends Component {
                      sideNavigationBarOpenStateChangingMethod={sideNavigationBarOpenStateChangingMethod}
                      goToPreviousResearchFieldMethod={goToPreviousResearchFieldMethod}
                      goToNextResearchFieldMethod={goToNextResearchFieldMethod}
-                     researchFieldOfCurrentlyDisplayedArticles={researchFieldOfCurrentlyDisplayedArticles}
+                     researchFields={researchFields}
+                     indexOfResearchFieldOfCurrentlyDisplayedArticles={indexOfResearchFieldOfCurrentlyDisplayedArticles}
                      sideNavigationBarIsOpen={sideNavigationBarIsOpen}/>
                  <ArticleColumnContainer
                      researchFieldToResearchPaperJSONObjectsMapping={researchFieldToResearchPaperJSONObjectsMapping}

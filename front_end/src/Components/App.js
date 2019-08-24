@@ -108,7 +108,8 @@ export class App extends Component {
                       sideNavigationBarOpenStateChangingMethod={this.changeSideNavigationBarOpenState}
                       sideNavigationBarIsOpen={sideNavigationBarIsOpen}/>
                   <CenterFrame
-                      researchFieldOfCurrentlyDisplayedArticles={researchFieldOfCurrentlyDisplayedArticles}
+                      researchFields={researchFields}
+                      indexOfResearchFieldOfCurrentlyDisplayedArticles={indexOfResearchFieldOfCurrentlyDisplayedArticles}
                       researchPaperJSONObjects={allResearchPaperJSONObjects}
                       goToNextResearchFieldMethod={this.goToNextResearchFieldMethod}
                       goToPreviousResearchFieldMethod={this.goToPreviousResearchFieldMethod}
