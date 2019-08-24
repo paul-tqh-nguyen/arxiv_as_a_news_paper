@@ -90,7 +90,6 @@ export class App extends Component {
     
     render() {
         let { researchFields, indexOfResearchFieldOfCurrentlyDisplayedArticles, allResearchPaperJSONObjects, dataIsLoaded, sideNavigationBarIsOpen } = this.state;
-        let researchFieldOfCurrentlyDisplayedArticles = researchFields[indexOfResearchFieldOfCurrentlyDisplayedArticles];
         if ( dataIsLoaded ) {
             window.location.hash = '#'.concat(indexOfResearchFieldOfCurrentlyDisplayedArticles.toString());
         }
